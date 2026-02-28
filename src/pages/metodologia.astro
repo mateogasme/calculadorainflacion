@@ -1,0 +1,444 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../sections/Header.astro";
+import ExternalLinkIcon from "../assets/icons/external-link.svg";
+
+const schema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Organization",
+            "@id": "https://datosar.com/#organization",
+            name: "DatosAR",
+            url: "https://datosar.com/",
+        },
+        {
+            "@type": "WebSite",
+            "@id": "https://datosar.com/#website",
+            name: "DatosAR",
+            url: "https://datosar.com/",
+            inLanguage: "es-AR",
+            publisher: { "@id": "https://datosar.com/#organization" },
+        },
+        {
+            "@type": "Dataset",
+            "@id": "https://datosar.com/metodologia#dataset",
+            name: "Fuentes e Índices de Inflación Argentina (1950-2026)",
+            description:
+                "Metodología, fórmulas y empalme estadístico oficial del Instituto Nacional de Estadística y Censos (INDEC) utilizados para nuestra calculadora.",
+            creator: { "@id": "https://datosar.com/#organization" },
+            inLanguage: "es-AR",
+            url: "https://datosar.com/metodologia",
+            isPartOf: { "@id": "https://datosar.com/#website" },
+            keywords: ["inflacion argentina", "ipc indec", "metodologia"],
+            dateModified: "2026-02-27",
+        },
+        {
+            "@type": "TechArticle",
+            "@id": "https://datosar.com/metodologia#article",
+            headline:
+                "Metodología y Fuentes de la Calculadora de Inflación Argentina",
+            description:
+                "Explicación técnica del empalme de series, cambios monetarios y límites estadísticos usados para calcular inflación acumulada en Argentina.",
+            inLanguage: "es-AR",
+            url: "https://datosar.com/metodologia",
+            author: { "@id": "https://datosar.com/#organization" },
+            publisher: { "@id": "https://datosar.com/#organization" },
+            isPartOf: { "@id": "https://datosar.com/#website" },
+            mainEntityOfPage: "https://datosar.com/metodologia",
+            dateModified: "2026-02-27",
+        },
+        {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Inicio",
+                    item: "https://datosar.com/",
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Metodología",
+                    item: "https://datosar.com/metodologia",
+                },
+            ],
+        },
+    ],
+});
+---
+
+<Layout
+    title="Metodología y Fuentes - Calculadora de Inflación Argentina (1950-2026) | Datos Oficiales INDEC"
+    description="Conocé la metodología detrás de la calculadora de inflación histórica DatosAR. Análisis de fuentes del INDEC, empalmes estadísticos y cronología de cambios monetarios."
+    url="https://datosar.com/metodologia"
+    schema={schema}
+>
+    <Header />
+
+    <main class="w-full max-w-[640px] px-6 md:px-0 mx-auto pt-14 pb-24">
+        <h1
+            class="text-4xl md:text-5xl font-bold tracking-[-0.04em] text-primary text-center mb-12 animate-fade-in-up"
+        >
+            Metodología y Fuentes
+        </h1>
+
+        <div class="flex flex-col gap-6">
+            <!-- Bloque 1 -->
+            <section
+                class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-100"
+            >
+                <h2 class="text-xl font-bold text-primary mb-3 tracking-tight">
+                    La construcción del motor de datos
+                </h2>
+                <p class="text-[15px] leading-relaxed text-primary/80 mb-4">
+                    Calcular la inflación acumulada en Argentina a lo largo de
+                    décadas es un desafío matemático e histórico. Nuestro motor
+                    se basó en el principio de ofrecer la <strong
+                        >mayor precisión posible</strong
+                    > a nivel académico ("Búsqueda Purista"), lo que requirió el empalme
+                    de múltiples series históricas debido a la intervención gubernamental
+                    y los constantes cambios de moneda.
+                </p>
+                <p class="text-[15px] leading-relaxed text-primary/80">
+                    A diferencia de otras calculadoras genéricas en línea, esta
+                    herramienta rastrea los cambios a nivel mes a mes logrando
+                    evitar "suavizados" algorítmicos engañosos para el lapso de
+                    los últimos 34 años.
+                </p>
+            </section>
+
+            <!-- Bloque 2 -->
+            <section
+                class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-200"
+            >
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-primary tracking-tight">
+                        El Período Reciente (1992 - Presente)
+                    </h2>
+                </div>
+                <p class="text-[15px] leading-relaxed text-primary/80 mb-5">
+                    Para los últimos 34 años, <strong
+                        >utilizamos datos mensuales hiper-precisos</strong
+                    >. Conseguimos una base de datos histórica con un empalme
+                    riguroso que une y cruza las siguientes fuentes de rigor
+                    económico:
+                </p>
+                <ul
+                    class="flex flex-col gap-4 text-[14px] text-primary/70 ml-1.5"
+                >
+                    <li class="flex items-start gap-3">
+                        <span class="text-blue mt-0.5 font-bold">•</span>
+                        <span class="leading-relaxed"
+                            ><strong
+                                >Índice de Precios al Consumidor (INDEC):</strong
+                            > Utilizamos la serie oficial del nivel general del IPC.</span
+                        >
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-blue mt-0.5 font-bold">•</span>
+                        <span class="leading-relaxed"
+                            ><strong
+                                >MIT Sloan Research (Alberto Cavallo):</strong
+                            > Durante la <a
+                                class="text-blue hover:underline underline-offset-2 transition-colors"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href="https://chequeado.com/el-explicador/que-fue-la-intervencion-del-indec-y-como-impacto-en-los-datos/"
+                                >intervención del INDEC (aprox. 2007-2015) <ExternalLinkIcon
+                                    class="w-3.5 h-3.5 inline mb-0.5"
+                                /></a
+                            >, las cifras oficiales de inflación eran falsas y
+                            perdieron su rigor estadístico. Por lo tanto, para
+                            este lapso de años específicos, cruzamos y
+                            sobre-escribimos la base de datos con los resultados
+                            del paper de investigación del MIT ("The Billion
+                            Prices Project") que recopiló y rearmó el IPC real
+                            (Índices Congreso y supermercados) para devolverle
+                            legitimidad estadística a nuestros cálculos.</span
+                        >
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Bloque 3 -->
+            <section
+                class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-300"
+            >
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-primary tracking-tight">
+                        El Período Histórico (1950 - 1991)
+                    </h2>
+                </div>
+                <p class="text-[15px] leading-relaxed text-primary/80 mb-5">
+                    Para el período previo a 1992, los datos digitalizados <em
+                        >mensuales</em
+                    > para el cruce de APIs públicas no son accesibles con fiabilidad.
+                    Por este motivo:
+                </p>
+                <ul
+                    class="flex flex-col gap-4 text-[14px] text-primary/70 ml-1.5"
+                >
+                    <li class="flex items-start gap-3">
+                        <span class="text-primary/40 mt-0.5 font-bold">•</span>
+                        <span class="leading-relaxed"
+                            >La data <strong>anual</strong> de este período <strong
+                                >es 100% precisa y real</strong
+                            >, recabando base a la serie histórica consensuada
+                            de OJF (Orlando J. Ferreres) y los archivos
+                            históricos en papel del INDEC.</span
+                        >
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-primary/40 mt-0.5 font-bold">•</span>
+                        <span class="leading-relaxed"
+                            >La curva <em>mensual</em> entre enero y diciembre se
+                            genera de manera geométrica, distribuyendo el salto anual
+                            documentado en 12 escaños mensuales perfectos.</span
+                        >
+                    </li>
+                </ul>
+                <div
+                    class="mt-6 p-4 rounded-xl border border-primary/5 bg-primary/[0.02]"
+                >
+                    <p
+                        class="text-[13px] leading-relaxed text-primary/60 font-medium"
+                    >
+                        <strong>Información técnica:</strong> Esto asegura rentabilidad
+                        real si evaluás un rango de años enteros de los ochentas o
+                        setentas. Adviértase sin embargo que, si calculás meses intermedios
+                        muy puntuales dentro de 1989 o 1990 (la hiperinflación), la
+                        curva será algorítmicamente suavizada, omitiendo los "picos"
+                        asimétricos diarios que sucedieron en esa época.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Bloque 4 -->
+            <section
+                class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-400"
+            >
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-primary tracking-tight">
+                        Cambios de Signo Monetario y Ceros
+                    </h2>
+                </div>
+                <p class="text-[15px] leading-relaxed text-primary/80 mb-6">
+                    A lo largo de su historia republicana, Argentina le ha
+                    quitado <strong>13 ceros</strong> a su moneda a través de diferentes
+                    cambios de signo. Nuestro motor ejecuta matemáticamente esta deflación
+                    nominal en las ecuaciones en tiempo real sin que el usuario lo
+                    note.
+                </p>
+
+                <!-- Cronología de Monedas -->
+                <div
+                    class="overflow-x-auto rounded-xl border border-primary/5 bg-primary/[0.01]"
+                >
+                    <table
+                        class="w-full text-left text-[14px] text-primary/80 border-collapse"
+                    >
+                        <thead>
+                            <tr
+                                class="border-b border-primary/5 bg-primary/[0.02]"
+                            >
+                                <th
+                                    class="py-3.5 px-5 font-semibold text-primary/60"
+                                    >Moneda</th
+                                >
+                                <th
+                                    class="py-3.5 px-5 font-semibold text-primary/60"
+                                    >Período</th
+                                >
+                                <th
+                                    class="py-3.5 px-5 font-semibold text-primary/60 text-right"
+                                    >Ceros quitados</th
+                                >
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-primary/5">
+                            <tr
+                                class="hover:bg-primary/[0.02] transition-colors"
+                            >
+                                <td class="py-3.5 px-5 font-medium"
+                                    >Peso Moneda Nacional (m$n)</td
+                                >
+                                <td class="py-3.5 px-5 text-primary/60"
+                                    >Hasta 1969</td
+                                >
+                                <td
+                                    class="py-3.5 px-5 text-right text-primary/40"
+                                    >-</td
+                                >
+                            </tr>
+                            <tr
+                                class="hover:bg-primary/[0.02] transition-colors"
+                            >
+                                <td class="py-3.5 px-5 font-medium"
+                                    >Peso Ley 18.188 ($Ley)</td
+                                >
+                                <td class="py-3.5 px-5 text-primary/60"
+                                    >1970 - 1983</td
+                                >
+                                <td
+                                    class="py-3.5 px-5 text-right font-medium text-red-500/80"
+                                    >- 2 ceros</td
+                                >
+                            </tr>
+                            <tr
+                                class="hover:bg-primary/[0.02] transition-colors"
+                            >
+                                <td class="py-3.5 px-5 font-medium"
+                                    >Peso Argentino ($A)</td
+                                >
+                                <td class="py-3.5 px-5 text-primary/60"
+                                    >1983 - 1985</td
+                                >
+                                <td
+                                    class="py-3.5 px-5 text-right font-medium text-red-500/80"
+                                    >- 4 ceros</td
+                                >
+                            </tr>
+                            <tr
+                                class="hover:bg-primary/[0.02] transition-colors"
+                            >
+                                <td class="py-3.5 px-5 font-medium"
+                                    >Austral (₳)</td
+                                >
+                                <td class="py-3.5 px-5 text-primary/60"
+                                    >1985 - 1991</td
+                                >
+                                <td
+                                    class="py-3.5 px-5 text-right font-medium text-red-500/80"
+                                    >- 3 ceros</td
+                                >
+                            </tr>
+                            <tr
+                                class="hover:bg-primary/[0.02] transition-colors"
+                            >
+                                <td class="py-3.5 px-5 font-medium"
+                                    >Peso Convertible/Actual ($)</td
+                                >
+                                <td class="py-3.5 px-5 text-primary/60"
+                                    >1992 - Presente</td
+                                >
+                                <td
+                                    class="py-3.5 px-5 text-right font-medium text-red-500/80"
+                                    >- 4 ceros</td
+                                >
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Bloque 5 -->
+            <section
+                class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-500"
+            >
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-primary tracking-tight">
+                        La Fórmula Matemática
+                    </h2>
+                </div>
+                <p class="text-[15px] leading-relaxed text-primary/80 mb-5">
+                    El corazón de la calculadora es increíblemente sencillo en
+                    términos teóricos. Funciona contrastando índices puros
+                    recabados mes a mes en nuestra base de datos.
+                </p>
+                <div
+                    class="bg-secondary/50 rounded-xl border border-primary/10 p-5 flex flex-col items-center justify-center mb-5 relative group text-center"
+                >
+                    <div
+                        class="absolute inset-0 bg-blue/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-xl"
+                    >
+                    </div>
+                    <code
+                        class="text-[13px] md:text-[15px] font-mono text-primary leading-relaxed md:leading-normal"
+                    >
+                        <span class="text-blue font-semibold"
+                            >Valor Ajustado ($)</span
+                        > = <span class="text-primary/70">Monto Inicial</span> × (
+                        <span class="text-primary/90">Índice Destino</span> / <span
+                            class="text-primary/90">Índice Origen</span
+                        > )
+                    </code>
+                </div>
+                <p class="text-[15px] leading-relaxed text-primary/80">
+                    A través de esta simple división matemática, que devuelve un
+                    ratio exacto de crecimiento (o deflación porcentual), el
+                    resultado condensa de manera elegante todas las
+                    intervenciones de cero y cambios de signo de la tabla
+                    superior, así como el paso natural del deterioro adquisitivo
+                    de las décadas.
+                </p>
+            </section>
+
+            <!-- Bloque 6 -->
+            <section
+                class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-600"
+            >
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-primary tracking-tight">
+                        Limitaciones de los Datos
+                    </h2>
+                </div>
+                <p class="text-[15px] leading-relaxed text-primary/80 mb-4">
+                    Al utilizar cualquier herramienta de reconstrucción
+                    histórica, existen consideraciones importantes a tener en
+                    cuenta para su interpretación sociológica:
+                </p>
+                <ul
+                    class="flex flex-col gap-3 text-[14px] text-primary/70 ml-1.5"
+                >
+                    <li class="flex items-start gap-3">
+                        <span class="text-red-500/60 mt-0.5 font-bold">•</span>
+                        <span class="leading-relaxed"
+                            ><strong>El Gran Buenos Aires (GBA):</strong> Históricamente,
+                            muchos de los índices de precios en Argentina (especialmente
+                            los más antiguos) medían de forma exclusiva el conglomerado
+                            urbano del GBA, no gozando de una cobertura federal integral
+                            o un "IPC Nacional" promediado hasta las metodologías
+                            de épocas más actuales.</span
+                        >
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-red-500/60 mt-0.5 font-bold">•</span>
+                        <span class="leading-relaxed"
+                            ><strong>Controles de Precios (Stagflation):</strong
+                            > Intervenciones gubernamentales ("Precios Máximos", control
+                            de góndolas o tarifas de servicios congeladas) pueden
+                            hacer que para ciertos años históricamente críticos la
+                            inflación documentada registrada difiera drásticamente
+                            de la escasez real o "inflación reprimida" sentida en
+                            las góndolas y el poder de compra ciudadano.</span
+                        >
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Bloque 7 -->
+            <section
+                class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-700"
+            >
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-primary tracking-tight">
+                        Mantenimiento y Exactitud
+                    </h2>
+                </div>
+                <p class="text-[15px] leading-relaxed text-primary/80">
+                    El INDEC publica los datos oficiales de inflación hacia
+                    mediados de cada mes en la República Argentina
+                    (habitualmente de 11 a 15 de cada mes). Nuestro motor de
+                    datos <strong
+                        >se sincroniza y actualiza los índices base de forma
+                        mensual</strong
+                    > periódica dentro de las horas posteriores a cada publicación,
+                    garantizando una herramienta viva y lista para consultas diarias
+                    permanentemente vigentes.
+                </p>
+            </section>
+        </div>
+    </main>
+</Layout>

@@ -1,0 +1,22 @@
+---
+interface Props {
+    content: string;
+}
+
+const { content } = Astro.props;
+---
+
+<span
+    class="relative group text-blue cursor-help underline decoration-dotted underline-offset-4"
+>
+    <slot />
+    <span
+        class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none w-max max-w-48 p-2 bg-primary text-secondary text-xs font-normal rounded-md shadow-lg z-10"
+    >
+        {content}
+        <!-- Flechita del tooltip -->
+        <span
+            class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-primary"
+        ></span>
+    </span>
+</span>

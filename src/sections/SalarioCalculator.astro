@@ -1,0 +1,828 @@
+---
+const months = [
+    { value: "1", label: "Enero" },
+    { value: "2", label: "Febrero" },
+    { value: "3", label: "Marzo" },
+    { value: "4", label: "Abril" },
+    { value: "5", label: "Mayo" },
+    { value: "6", label: "Junio" },
+    { value: "7", label: "Julio" },
+    { value: "8", label: "Agosto" },
+    { value: "9", label: "Septiembre" },
+    { value: "10", label: "Octubre" },
+    { value: "11", label: "Noviembre" },
+    { value: "12", label: "Diciembre" },
+];
+
+const currentYear = new Date().getFullYear();
+const currentMonth = new Date().getMonth() + 1;
+
+// Desde 1950 hasta el año actual
+const years = Array.from(
+    { length: currentYear - 1949 },
+    (_, i) => currentYear - i,
+);
+---
+
+<section
+    id="calculadora-salarial"
+    class="w-full max-w-[640px] px-6 md:px-0 mx-auto mt-14"
+>
+    <div
+        class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-150"
+    >
+        <form id="salary-form" class="flex flex-col gap-6">
+            <!-- Selector de Modos -->
+            <div
+                class="flex p-1 bg-primary/5 rounded-xl w-full sm:w-fit mx-auto mb-2 border border-primary/5"
+            >
+                <button
+                    type="button"
+                    id="tab-actualizar"
+                    class="flex-1 sm:flex-none px-5 py-2.5 text-[14px] font-medium rounded-lg bg-secondary text-primary shadow-sm border border-primary/10 transition-all"
+                    >Actualizar sueldo</button
+                >
+                <button
+                    type="button"
+                    id="tab-comparar"
+                    class="flex-1 sm:flex-none px-5 py-2.5 text-[14px] font-medium rounded-lg text-primary/60 hover:text-primary transition-all border border-transparent"
+                    >Comparar sueldos</button
+                >
+            </div>
+
+            <!-- Bloque 1: Sueldo Inicial -->
+            <div class="flex flex-col sm:flex-row gap-6">
+                <div class="flex-1 flex flex-col gap-2.5">
+                    <label
+                        for="amount1"
+                        class="text-sm font-medium text-primary/80 flex items-center gap-2"
+                    >
+                        <span
+                            class="w-2 h-2 rounded-full border-[2px] border-primary/30"
+                        ></span>
+                        Sueldo Inicial
+                    </label>
+                    <p class="text-[12px] text-primary/40 -mt-1.5 mb-0.5 ml-4">
+                        Tu sueldo en mano en ese momento.
+                    </p>
+                    <div class="relative group">
+                        <span
+                            class="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 font-medium group-focus-within:text-blue"
+                            >$</span
+                        >
+                        <input
+                            type="text"
+                            inputmode="decimal"
+                            id="amount1"
+                            name="amount1"
+                            placeholder="500.000"
+                            required
+                            class="w-full pl-9 pr-4 py-3.5 bg-secondary border border-primary/10 rounded-xl text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue placeholder:text-primary/30 shadow-none"
+                        />
+                    </div>
+                </div>
+
+                <div class="flex-1 flex flex-col gap-2.5 justify-end">
+                    <div class="flex gap-2.5">
+                        <div class="relative flex-1">
+                            <select
+                                id="salary-start-month"
+                                name="startMonth"
+                                aria-label="Mes de origen"
+                                class="w-full appearance-none cursor-pointer pl-3.5 pr-8 py-3.5 bg-secondary border border-primary/10 rounded-xl text-[15px] text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue"
+                            >
+                                {
+                                    months.map((month) => (
+                                        <option value={month.value}>
+                                            {month.label}
+                                        </option>
+                                    ))
+                                }
+                            </select>
+                            <svg
+                                class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path d="m6 9 6 6 6-6"></path></svg
+                            >
+                        </div>
+                        <div class="relative flex-1">
+                            <select
+                                id="salary-start-year"
+                                name="startYear"
+                                aria-label="Año de origen"
+                                class="w-full appearance-none cursor-pointer pl-3.5 pr-8 py-3.5 bg-secondary border border-primary/10 rounded-xl text-[15px] text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue"
+                            >
+                                {
+                                    years.map((year) => (
+                                        <option value={year}>{year}</option>
+                                    ))
+                                }
+                            </select>
+                            <svg
+                                class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path d="m6 9 6 6 6-6"></path></svg
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-px w-full bg-primary/5"></div>
+
+            <!-- Contenedor del Slider para Bloque 2 -->
+            <div class="-mx-6 md:-mx-8 py-2 relative overflow-hidden">
+                <div
+                    id="bloque-2-track"
+                    class="flex w-[200%] transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] translate-x-0"
+                >
+                    <!-- PANE 1: Actualizar -->
+                    <div
+                        class="w-1/2 flex-shrink-0 flex flex-col sm:flex-row gap-6 px-6 md:px-8"
+                    >
+                        <div class="w-full flex flex-col gap-2.5 justify-end">
+                            <label
+                                class="text-sm font-medium text-primary/80 flex items-center gap-2"
+                            >
+                                <span class="w-2 h-2 rounded-full bg-blue"
+                                ></span>
+                                Fecha a actualizar
+                            </label>
+                            <p
+                                class="text-[12px] text-primary/40 -mt-1.5 mb-0.5 ml-4"
+                            >
+                                ¿Contra qué fecha querés proyectar?
+                            </p>
+                            <div class="flex gap-2.5">
+                                <div class="relative flex-1">
+                                    <select
+                                        id="salary-end-month-act"
+                                        name="endMonthAct"
+                                        aria-label="Mes de destino"
+                                        class="w-full appearance-none cursor-pointer pl-3.5 pr-8 py-3.5 bg-secondary border border-primary/10 rounded-xl text-[15px] text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue"
+                                    >
+                                        {
+                                            months.map((month) => (
+                                                <option
+                                                    value={month.value}
+                                                    selected={
+                                                        month.value ===
+                                                        currentMonth.toString()
+                                                    }
+                                                >
+                                                    {month.label}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                    <svg
+                                        class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        ><path d="m6 9 6 6 6-6"></path></svg
+                                    >
+                                </div>
+                                <div class="relative flex-1">
+                                    <select
+                                        id="salary-end-year-act"
+                                        name="endYearAct"
+                                        aria-label="Año de destino"
+                                        class="w-full appearance-none cursor-pointer pl-3.5 pr-8 py-3.5 bg-secondary border border-primary/10 rounded-xl text-[15px] text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue"
+                                    >
+                                        {
+                                            years.map((year) => (
+                                                <option
+                                                    value={year}
+                                                    selected={
+                                                        year === currentYear
+                                                    }
+                                                >
+                                                    {year}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                    <svg
+                                        class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        ><path d="m6 9 6 6 6-6"></path></svg
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PANE 2: Comparar -->
+                    <div
+                        class="w-1/2 flex-shrink-0 flex flex-col sm:flex-row gap-6 px-6 md:px-8"
+                    >
+                        <div class="flex-1 flex flex-col gap-2.5">
+                            <label
+                                for="amount2"
+                                class="text-sm font-medium text-primary/80 flex items-center gap-2"
+                            >
+                                <span class="w-2 h-2 rounded-full bg-blue"
+                                ></span>
+                                Nuevo Sueldo
+                            </label>
+                            <p
+                                class="text-[12px] text-primary/40 -mt-1.5 mb-0.5 ml-4"
+                            >
+                                Tu sueldo actual en mano.
+                            </p>
+                            <div class="relative group">
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 font-medium group-focus-within:text-blue"
+                                    >$</span
+                                >
+                                <input
+                                    type="text"
+                                    inputmode="decimal"
+                                    id="amount2"
+                                    name="amount2"
+                                    placeholder="650.000"
+                                    class="w-full pl-9 pr-4 py-3.5 bg-secondary border border-primary/10 rounded-xl text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue placeholder:text-primary/30 shadow-none"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="flex-1 flex flex-col gap-2.5 justify-end">
+                            <label
+                                class="sm:hidden text-sm font-medium text-primary/80 flex items-center gap-2"
+                            >
+                                <span class="w-2 h-2 rounded-full bg-blue"
+                                ></span>
+                                Fecha del nuevo sueldo
+                            </label>
+                            <div class="flex gap-2.5">
+                                <div class="relative flex-1">
+                                    <select
+                                        id="salary-end-month-comp"
+                                        name="endMonthComp"
+                                        aria-label="Mes de destino"
+                                        class="w-full appearance-none cursor-pointer pl-3.5 pr-8 py-3.5 bg-secondary border border-primary/10 rounded-xl text-[15px] text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue"
+                                    >
+                                        {
+                                            months.map((month) => (
+                                                <option
+                                                    value={month.value}
+                                                    selected={
+                                                        month.value ===
+                                                        currentMonth.toString()
+                                                    }
+                                                >
+                                                    {month.label}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                    <svg
+                                        class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        ><path d="m6 9 6 6 6-6"></path></svg
+                                    >
+                                </div>
+                                <div class="relative flex-1">
+                                    <select
+                                        id="salary-end-year-comp"
+                                        name="endYearComp"
+                                        aria-label="Año de destino"
+                                        class="w-full appearance-none cursor-pointer pl-3.5 pr-8 py-3.5 bg-secondary border border-primary/10 rounded-xl text-[15px] text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue"
+                                    >
+                                        {
+                                            years.map((year) => (
+                                                <option
+                                                    value={year}
+                                                    selected={
+                                                        year === currentYear
+                                                    }
+                                                >
+                                                    {year}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                    <svg
+                                        class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        ><path d="m6 9 6 6 6-6"></path></svg
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenedor de Error para Fechas -->
+            <div
+                id="salary-date-error"
+                class="hidden items-center gap-2.5 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-[13px] font-medium animate-fade-in-up mt-1"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="shrink-0"
+                    ><circle cx="12" cy="12" r="10"></circle><line
+                        x1="12"
+                        y1="8"
+                        x2="12"
+                        y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"
+                    ></line></svg
+                >
+                <span
+                    >La fecha inicial no puede ser posterior a la fecha del
+                    nuevo sueldo.</span
+                >
+            </div>
+
+            <!-- Botón -->
+            <button
+                id="salary-submit-button"
+                type="submit"
+                class="w-full mt-2 py-3.5 flex items-center justify-center gap-2 bg-primary text-secondary rounded-xl font-medium hover:bg-primary/90 transition-all active:scale-[0.98] outline-none focus-visible:ring-[3px] focus-visible:ring-blue/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 disabled:hover:bg-primary"
+            >
+                <span id="salary-button-text">Analizar sueldo</span>
+                <span id="salary-button-icon" class="flex items-center">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"
+                        ></path></svg
+                    >
+                </span>
+                <svg
+                    id="salary-button-loader"
+                    class="hidden animate-spin h-5 w-5 text-secondary"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="4"></circle>
+                    <path
+                        class="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                </svg>
+            </button>
+        </form>
+    </div>
+</section>
+
+<script>
+    import inflationData from "../data/inflation.json";
+
+    const initCalculator = () => {
+        const form = document.getElementById("salary-form") as HTMLFormElement;
+
+        if (!form || form.hasAttribute("data-initialized")) return;
+        form.setAttribute("data-initialized", "true");
+
+        const amount1Input = document.getElementById(
+            "amount1",
+        ) as HTMLInputElement;
+        const amount2Input = document.getElementById(
+            "amount2",
+        ) as HTMLInputElement;
+
+        const startMonthSelect = document.getElementById(
+            "salary-start-month",
+        ) as HTMLSelectElement;
+        const startYearSelect = document.getElementById(
+            "salary-start-year",
+        ) as HTMLSelectElement;
+        const endMonthAct = document.getElementById(
+            "salary-end-month-act",
+        ) as HTMLSelectElement;
+        const endYearAct = document.getElementById(
+            "salary-end-year-act",
+        ) as HTMLSelectElement;
+        const endMonthComp = document.getElementById(
+            "salary-end-month-comp",
+        ) as HTMLSelectElement;
+        const endYearComp = document.getElementById(
+            "salary-end-year-comp",
+        ) as HTMLSelectElement;
+        const submitBtn = document.getElementById(
+            "salary-submit-button",
+        ) as HTMLButtonElement;
+        const dateError = document.getElementById(
+            "salary-date-error",
+        ) as HTMLDivElement;
+        const btnText = document.getElementById(
+            "salary-button-text",
+        ) as HTMLSpanElement;
+        const btnIcon = document.getElementById(
+            "salary-button-icon",
+        ) as HTMLSpanElement;
+        const btnLoader = document.getElementById(
+            "salary-button-loader",
+        ) as HTMLElement;
+
+        // Lógica de Tabs / Modos
+        const tabActualizar = document.getElementById("tab-actualizar");
+        const tabComparar = document.getElementById("tab-comparar");
+        const track = document.getElementById("bloque-2-track");
+        let currentMode = "actualizar"; // default
+
+        const validateDates = () => {
+            if (
+                !startMonthSelect ||
+                !startYearSelect ||
+                !submitBtn ||
+                !dateError
+            )
+                return true;
+
+            const activeMonthSelect =
+                currentMode === "actualizar" ? endMonthAct : endMonthComp;
+            const activeYearSelect =
+                currentMode === "actualizar" ? endYearAct : endYearComp;
+
+            if (!activeMonthSelect || !activeYearSelect) return true;
+
+            const sm = parseInt(startMonthSelect.value, 10);
+            const sy = parseInt(startYearSelect.value, 10);
+            const em = parseInt(activeMonthSelect.value, 10);
+            const ey = parseInt(activeYearSelect.value, 10);
+
+            if (sy > ey || (sy === ey && sm > em)) {
+                dateError.classList.remove("hidden");
+                dateError.classList.add("flex");
+                submitBtn.disabled = true;
+                return false;
+            } else {
+                dateError.classList.add("hidden");
+                dateError.classList.remove("flex");
+                submitBtn.disabled = false;
+                return true;
+            }
+        };
+
+        const setMode = (mode: string) => {
+            currentMode = mode;
+            if (mode === "actualizar") {
+                tabActualizar?.classList.add(
+                    "bg-secondary",
+                    "text-primary",
+                    "shadow-sm",
+                    "border-primary/10",
+                );
+                tabActualizar?.classList.remove(
+                    "text-primary/60",
+                    "border-transparent",
+                );
+                tabComparar?.classList.remove(
+                    "bg-secondary",
+                    "text-primary",
+                    "shadow-sm",
+                    "border-primary/10",
+                );
+                tabComparar?.classList.add(
+                    "text-primary/60",
+                    "border-transparent",
+                );
+
+                if (track) track.style.transform = "translateX(0%)";
+                amount2Input.removeAttribute("required");
+
+                if (btnText) btnText.textContent = "Actualizar sueldo";
+            } else {
+                tabComparar?.classList.add(
+                    "bg-secondary",
+                    "text-primary",
+                    "shadow-sm",
+                    "border-primary/10",
+                );
+                tabComparar?.classList.remove(
+                    "text-primary/60",
+                    "border-transparent",
+                );
+                tabActualizar?.classList.remove(
+                    "bg-secondary",
+                    "text-primary",
+                    "shadow-sm",
+                    "border-primary/10",
+                );
+                tabActualizar?.classList.add(
+                    "text-primary/60",
+                    "border-transparent",
+                );
+
+                if (track) track.style.transform = "translateX(-50%)";
+                amount2Input.setAttribute("required", "true");
+
+                if (btnText) btnText.textContent = "Comparar sueldos";
+            }
+            validateDates();
+        };
+
+        tabActualizar?.addEventListener("click", () => setMode("actualizar"));
+        tabComparar?.addEventListener("click", () => setMode("comparar"));
+
+        setMode("actualizar");
+
+        const formatInputCurrency = (input: HTMLInputElement) => {
+            let rawValue = input.value.replace(/\./g, "");
+            rawValue = rawValue.replace(/[^\d,]/g, "");
+            const commaCount = (rawValue.match(/,/g) || []).length;
+            if (commaCount > 1) rawValue = rawValue.slice(0, -1);
+
+            const parts = rawValue.split(",");
+            let integerPart = parts[0];
+            if (integerPart) {
+                integerPart = new Intl.NumberFormat("es-AR").format(
+                    parseInt(integerPart, 10),
+                );
+            }
+            input.value =
+                parts.length > 1 ? `${integerPart},${parts[1]}` : integerPart;
+        };
+
+        amount1Input?.addEventListener("input", () =>
+            formatInputCurrency(amount1Input),
+        );
+        amount2Input?.addEventListener("input", () =>
+            formatInputCurrency(amount2Input),
+        );
+
+        const syncDatesAndValidate = (
+            source: HTMLSelectElement,
+            target: HTMLSelectElement,
+        ) => {
+            if (target) target.value = source.value;
+            validateDates();
+        };
+
+        startMonthSelect?.addEventListener("change", validateDates);
+        startYearSelect?.addEventListener("change", validateDates);
+        endMonthAct?.addEventListener("change", (e) =>
+            syncDatesAndValidate(e.target as HTMLSelectElement, endMonthComp),
+        );
+        endYearAct?.addEventListener("change", (e) =>
+            syncDatesAndValidate(e.target as HTMLSelectElement, endYearComp),
+        );
+        endMonthComp?.addEventListener("change", (e) =>
+            syncDatesAndValidate(e.target as HTMLSelectElement, endMonthAct),
+        );
+        endYearComp?.addEventListener("change", (e) =>
+            syncDatesAndValidate(e.target as HTMLSelectElement, endYearAct),
+        );
+
+        form?.addEventListener("submit", (e) => {
+            e.preventDefault();
+            if (submitBtn && submitBtn.disabled) return;
+            if (!validateDates()) return;
+
+            if (submitBtn && btnText && btnIcon && btnLoader) {
+                submitBtn.disabled = true;
+                btnText.textContent = "Analizando...";
+                btnIcon.classList.add("hidden");
+                btnLoader.classList.remove("hidden");
+            }
+
+            const formData = new FormData(form);
+            const amount1Str = formData.get("amount1")?.toString() || "0";
+            const amount2Str = formData.get("amount2")?.toString() || "0";
+            const initialSalary = parseFloat(
+                amount1Str.replace(/\./g, "").replace(",", "."),
+            );
+            const newSalary = parseFloat(
+                amount2Str.replace(/\./g, "").replace(",", "."),
+            );
+
+            const startMonth = formData.get("startMonth");
+            const startYear = formData.get("startYear");
+            const endMonth =
+                currentMode === "actualizar"
+                    ? formData.get("endMonthAct")
+                    : formData.get("endMonthComp");
+            const endYear =
+                currentMode === "actualizar"
+                    ? formData.get("endYearAct")
+                    : formData.get("endYearComp");
+
+            const performCalc = () => {
+                const resultContainer =
+                    document.getElementById("result-container");
+                const resultIdealAmount = document.getElementById(
+                    "result-ideal-amount",
+                );
+                const resultDesc =
+                    document.getElementById("result-description");
+                const resultPoder = document.getElementById("result-poder");
+                const resultDif = document.getElementById("result-diferencia");
+
+                if (!resultContainer) return;
+
+                const startKey = `${startYear}-${startMonth}`;
+                const date = new Date();
+                const actualYear = date.getFullYear();
+                const actualMonth = date.getMonth() + 1;
+                let finalEndYear = parseInt(endYear as string);
+                let finalEndMonth = parseInt(endMonth as string);
+
+                if (finalEndYear >= actualYear && finalEndMonth > actualMonth) {
+                    finalEndMonth = actualMonth;
+                }
+                const endKey = `${finalEndYear}-${finalEndMonth}`;
+
+                const typedData = inflationData as Record<
+                    string,
+                    { adjustedIndex: number }
+                >;
+
+                let startIndexValue = 1;
+                let endIndexValue = 1;
+
+                if (typedData[startKey])
+                    startIndexValue = typedData[startKey].adjustedIndex;
+                else
+                    startIndexValue =
+                        Object.values(typedData).pop()?.adjustedIndex || 1;
+
+                if (typedData[endKey])
+                    endIndexValue = typedData[endKey].adjustedIndex;
+                else
+                    endIndexValue =
+                        Object.values(typedData).pop()?.adjustedIndex || 1;
+
+                const ratio = endIndexValue / startIndexValue;
+                const idealSalary = initialSalary * ratio;
+
+                const fmt = new Intl.NumberFormat("es-AR", {
+                    maximumFractionDigits: 2,
+                });
+                const fmtPoder = new Intl.NumberFormat("es-AR", {
+                    maximumFractionDigits: 1,
+                });
+
+                const resultExtraData =
+                    document.getElementById("result-extra-data");
+
+                if (resultIdealAmount)
+                    resultIdealAmount.textContent = fmt.format(idealSalary);
+
+                const labelStart = `${startMonth}/${startYear}`;
+                const labelEnd = `${finalEndMonth}/${finalEndYear}`;
+
+                if (currentMode === "actualizar") {
+                    // Si NO ingresó "Nuevo Sueldo"
+                    if (resultExtraData)
+                        resultExtraData.classList.add("hidden");
+
+                    if (resultDesc) {
+                        resultDesc.innerHTML = `Para mantener el mismo poder adquisitivo que tenías ganando $${fmt.format(initialSalary)} en <span class="text-primary/90">${labelStart}</span>, en <span class="text-primary/90">${labelEnd}</span> deberías percibir <strong>$${fmt.format(idealSalary)}</strong>.`;
+                    }
+                } else {
+                    // Si SÍ ingresó "Nuevo Sueldo"
+                    if (resultExtraData) {
+                        resultExtraData.classList.remove("hidden");
+                        resultExtraData.classList.add("grid");
+                    }
+
+                    // Variacion de poder de compra
+                    const purchacingPowerRatio = newSalary / idealSalary; // si 1, empató
+                    const purchasingPowerVar = (purchacingPowerRatio - 1) * 100;
+                    const netDifference = newSalary - idealSalary;
+
+                    if (resultPoder) {
+                        const signPoder = purchasingPowerVar > 0 ? "+" : "";
+                        resultPoder.textContent = `${signPoder}${fmtPoder.format(purchasingPowerVar)}%`;
+                        // Color dinamico
+                        resultPoder.className =
+                            purchasingPowerVar > 0
+                                ? "text-2xl md:text-[32px] font-bold tracking-tighter text-green-500 tabular-nums leading-none break-all"
+                                : purchasingPowerVar < 0
+                                  ? "text-2xl md:text-[32px] font-bold tracking-tighter text-red-500 tabular-nums leading-none break-all"
+                                  : "text-2xl md:text-[32px] font-bold tracking-tighter text-primary/70 tabular-nums leading-none break-all";
+                    }
+
+                    if (resultDif) {
+                        const signDif =
+                            netDifference > 0
+                                ? "+$"
+                                : netDifference < 0
+                                  ? "-$"
+                                  : "$";
+                        resultDif.textContent = `${signDif}${fmt.format(Math.abs(netDifference))}`;
+                        resultDif.className =
+                            netDifference > 0
+                                ? "text-2xl md:text-[32px] font-bold tracking-tighter text-green-500 tabular-nums leading-none break-all"
+                                : netDifference < 0
+                                  ? "text-2xl md:text-[32px] font-bold tracking-tighter text-red-500 tabular-nums leading-none break-all"
+                                  : "text-2xl md:text-[32px] font-bold tracking-tighter text-primary/70 tabular-nums leading-none break-all";
+                    }
+
+                    if (resultDesc) {
+                        let judgment = "empató a la inflación";
+                        if (purchasingPowerVar > 0)
+                            judgment =
+                                "<strong class='text-green-500'>superó</strong> a la inflación";
+                        if (purchasingPowerVar < 0)
+                            judgment =
+                                "<strong class='text-red-500'>perdió</strong> contra la inflación";
+                        resultDesc.innerHTML = `Tu sueldo propuesto de <strong>$${fmt.format(newSalary)}</strong> en <span class="text-primary/90">${labelEnd}</span> ${judgment}. Para igualar adquisitivamente a los $${fmt.format(initialSalary)} de <span class="text-primary/90">${labelStart}</span>, deberías cobrar <strong>$${fmt.format(idealSalary)}</strong>.`;
+                    }
+                }
+
+                const labelOriginEl = document.getElementById("label-origin");
+                const labelDestEl = document.getElementById("label-dest");
+                if (labelOriginEl)
+                    labelOriginEl.textContent = `${startMonth?.toString().padStart(2, "0")}/${startYear}`;
+                if (labelDestEl)
+                    labelDestEl.textContent = `${finalEndMonth.toString().padStart(2, "0")}/${finalEndYear}`;
+
+                resultContainer.classList.remove("hidden");
+                resultContainer.classList.add("flex");
+                setTimeout(
+                    () =>
+                        resultContainer.scrollIntoView({
+                            behavior: "smooth",
+                            block: "nearest",
+                        }),
+                    100,
+                );
+            };
+
+            setTimeout(() => {
+                performCalc();
+                if (submitBtn && btnText && btnIcon && btnLoader) {
+                    submitBtn.disabled = false;
+                    btnText.textContent =
+                        currentMode === "actualizar"
+                            ? "Actualizar sueldo"
+                            : "Comparar sueldos";
+                    btnIcon.classList.remove("hidden");
+                    btnLoader.classList.add("hidden");
+                }
+            }, 350);
+        });
+    };
+
+    // Ejecutar en carga normal (sin ViewTransitions)
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initCalculator);
+    } else {
+        initCalculator();
+    }
+
+    // Ejecutar si se navega vía Astro ViewTransitions
+    document.addEventListener("astro:page-load", initCalculator);
+</script>

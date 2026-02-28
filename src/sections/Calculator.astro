@@ -1,0 +1,736 @@
+---
+const months = [
+    { value: "1", label: "Enero" },
+    { value: "2", label: "Febrero" },
+    { value: "3", label: "Marzo" },
+    { value: "4", label: "Abril" },
+    { value: "5", label: "Mayo" },
+    { value: "6", label: "Junio" },
+    { value: "7", label: "Julio" },
+    { value: "8", label: "Agosto" },
+    { value: "9", label: "Septiembre" },
+    { value: "10", label: "Octubre" },
+    { value: "11", label: "Noviembre" },
+    { value: "12", label: "Diciembre" },
+];
+
+const currentYear = new Date().getFullYear();
+const currentMonth = new Date().getMonth() + 1;
+
+// Desde 1950 hasta el año actual
+const years = Array.from(
+    { length: currentYear - 1949 },
+    (_, i) => currentYear - i,
+);
+---
+
+<section
+    id="calculadora"
+    class="w-full max-w-[640px] px-6 md:px-0 mx-auto mt-14"
+>
+    <div
+        class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-150"
+    >
+        <form id="inflation-form" class="flex flex-col gap-6">
+            <!-- Monto -->
+            <div class="flex flex-col gap-2.5">
+                <label for="amount" class="text-sm font-medium text-primary/80">
+                    Monto a comparar
+                </label>
+                <p class="text-[12px] text-primary/40 -mt-1 mb-0.5">
+                    Ingresá el monto que querés actualizar (ej: el precio de un
+                    kilo de pan).
+                </p>
+                <div class="relative group">
+                    <span
+                        class="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 font-medium group-focus-within:text-blue"
+                    >
+                        $
+                    </span>
+                    <input
+                        type="text"
+                        inputmode="decimal"
+                        id="amount"
+                        name="amount"
+                        placeholder="1.000"
+                        required
+                        class="w-full pl-9 pr-4 py-3.5 bg-secondary border border-primary/10 rounded-xl text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue placeholder:text-primary/30 shadow-none"
+                    />
+                </div>
+            </div>
+
+            <div class="h-px w-full bg-primary/5"></div>
+
+            <!-- Selectores de Fecha -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                <!-- Origen -->
+                <div class="flex flex-col gap-3">
+                    <label
+                        id="label-start-date"
+                        class="text-sm font-medium text-primary/80 flex items-center gap-2"
+                    >
+                        <span
+                            class="w-2 h-2 rounded-full border-[2px] border-primary/30"
+                        ></span>
+                        Fecha de origen
+                    </label>
+                    <p class="text-[12px] text-primary/40 -mt-1.5 mb-0.5 ml-4">
+                        ¿Cuándo valía ese monto?
+                    </p>
+                    <div class="flex gap-2.5">
+                        <div class="relative flex-1">
+                            <select
+                                id="start-month"
+                                name="startMonth"
+                                aria-labelledby="label-start-date"
+                                aria-label="Mes de origen"
+                                class="w-full appearance-none cursor-pointer pl-3.5 pr-8 py-3 bg-secondary border border-primary/10 rounded-xl text-sm text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue"
+                            >
+                                {
+                                    months.map((month) => (
+                                        <option value={month.value}>
+                                            {month.label}
+                                        </option>
+                                    ))
+                                }
+                            </select>
+                            <svg
+                                class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path d="m6 9 6 6 6-6"></path></svg
+                            >
+                        </div>
+                        <div class="relative flex-1">
+                            <select
+                                id="start-year"
+                                name="startYear"
+                                aria-labelledby="label-start-date"
+                                aria-label="Año de origen"
+                                class="w-full appearance-none cursor-pointer pl-3.5 pr-8 py-3 bg-secondary border border-primary/10 rounded-xl text-sm text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue"
+                            >
+                                {
+                                    years.map((year) => (
+                                        <option value={year}>{year}</option>
+                                    ))
+                                }
+                            </select>
+                            <svg
+                                class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path d="m6 9 6 6 6-6"></path></svg
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destino -->
+                <div class="flex flex-col gap-3">
+                    <label
+                        id="label-end-date"
+                        class="text-sm font-medium text-primary/80 flex items-center gap-2"
+                    >
+                        <span class="w-2 h-2 rounded-full bg-blue"></span>
+                        Fecha de destino
+                    </label>
+                    <p class="text-[12px] text-primary/40 -mt-1.5 mb-0.5 ml-4">
+                        ¿Hasta qué fecha querés calcular el impacto?
+                    </p>
+                    <div class="flex gap-2.5">
+                        <div class="relative flex-1">
+                            <select
+                                id="end-month"
+                                name="endMonth"
+                                aria-labelledby="label-end-date"
+                                aria-label="Mes de destino"
+                                class="w-full appearance-none cursor-pointer pl-3.5 pr-8 py-3 bg-secondary border border-primary/10 rounded-xl text-sm text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue"
+                            >
+                                {
+                                    months.map((month) => (
+                                        <option
+                                            value={month.value}
+                                            selected={
+                                                month.value ===
+                                                currentMonth.toString()
+                                            }
+                                        >
+                                            {month.label}
+                                        </option>
+                                    ))
+                                }
+                            </select>
+                            <svg
+                                class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path d="m6 9 6 6 6-6"></path></svg
+                            >
+                        </div>
+                        <div class="relative flex-1">
+                            <select
+                                id="end-year"
+                                name="endYear"
+                                aria-labelledby="label-end-date"
+                                aria-label="Año de destino"
+                                class="w-full appearance-none cursor-pointer pl-3.5 pr-8 py-3 bg-secondary border border-primary/10 rounded-xl text-sm text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue"
+                            >
+                                {
+                                    years.map((year) => (
+                                        <option
+                                            value={year}
+                                            selected={year === currentYear}
+                                        >
+                                            {year}
+                                        </option>
+                                    ))
+                                }
+                            </select>
+                            <svg
+                                class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path d="m6 9 6 6 6-6"></path></svg
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenedor de Error para Fechas -->
+            <div
+                id="date-error"
+                class="hidden items-center gap-2.5 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-[13px] font-medium animate-fade-in-up mt-1"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="shrink-0"
+                    ><circle cx="12" cy="12" r="10"></circle><line
+                        x1="12"
+                        y1="8"
+                        x2="12"
+                        y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"
+                    ></line></svg
+                >
+                <span
+                    >La fecha de origen no puede ser posterior a la fecha de
+                    destino.</span
+                >
+            </div>
+
+            <!-- Botón -->
+            <button
+                id="submit-button"
+                type="submit"
+                class="w-full mt-2 py-3.5 flex items-center justify-center gap-2 bg-primary text-secondary rounded-xl font-medium hover:bg-primary/90 transition-all active:scale-[0.98] outline-none focus-visible:ring-[3px] focus-visible:ring-blue/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 disabled:hover:bg-primary"
+            >
+                <span id="button-text">Calcular inflación</span>
+                <span id="button-icon" class="flex items-center">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"
+                        ></path></svg
+                    >
+                </span>
+                <svg
+                    id="button-loader"
+                    class="hidden animate-spin h-5 w-5 text-secondary"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="4"></circle>
+                    <path
+                        class="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                </svg>
+            </button>
+        </form>
+    </div>
+</section>
+
+<script>
+    import inflationData from "../data/inflation.json";
+
+    const initInflationCalculator = () => {
+        const form = document.getElementById(
+            "inflation-form",
+        ) as HTMLFormElement;
+
+        if (!form || form.hasAttribute("data-initialized")) return;
+        form.setAttribute("data-initialized", "true");
+
+        const amountInput = document.getElementById(
+            "amount",
+        ) as HTMLInputElement;
+
+        // Elementos de Accesibilidad y UI del formulario
+        const startMonthSelect = document.getElementById(
+            "start-month",
+        ) as HTMLSelectElement;
+        const startYearSelect = document.getElementById(
+            "start-year",
+        ) as HTMLSelectElement;
+        const endMonthSelect = document.getElementById(
+            "end-month",
+        ) as HTMLSelectElement;
+        const endYearSelect = document.getElementById(
+            "end-year",
+        ) as HTMLSelectElement;
+        const submitBtn = document.getElementById(
+            "submit-button",
+        ) as HTMLButtonElement;
+        const dateError = document.getElementById(
+            "date-error",
+        ) as HTMLDivElement;
+        const btnText = document.getElementById(
+            "button-text",
+        ) as HTMLSpanElement;
+        const btnIcon = document.getElementById(
+            "button-icon",
+        ) as HTMLSpanElement;
+        const btnLoader = document.getElementById(
+            "button-loader",
+        ) as HTMLElement;
+
+        // Validación de fechas
+        const validateDates = () => {
+            if (
+                !startMonthSelect ||
+                !startYearSelect ||
+                !endMonthSelect ||
+                !endYearSelect ||
+                !dateError ||
+                !submitBtn
+            )
+                return true;
+
+            const sm = parseInt(startMonthSelect.value, 10);
+            const sy = parseInt(startYearSelect.value, 10);
+            const em = parseInt(endMonthSelect.value, 10);
+            const ey = parseInt(endYearSelect.value, 10);
+
+            // Verificamos si la fecha de origen es mayor al destino
+            if (sy > ey || (sy === ey && sm > em)) {
+                dateError.classList.remove("hidden");
+                dateError.classList.add("flex");
+                submitBtn.disabled = true;
+                return false;
+            } else {
+                dateError.classList.add("hidden");
+                dateError.classList.remove("flex");
+                submitBtn.disabled = false;
+                return true;
+            }
+        };
+
+        // Escuchar cambios para aplicar validación en vivo
+        startMonthSelect?.addEventListener("change", validateDates);
+        startYearSelect?.addEventListener("change", validateDates);
+        endMonthSelect?.addEventListener("change", validateDates);
+        endYearSelect?.addEventListener("change", validateDates);
+
+        // Formatear montos con punto de miles y coma decimal en vivo
+        amountInput?.addEventListener("input", () => {
+            // Remover puntos previos
+            let rawValue = amountInput.value.replace(/\./g, "");
+            // Mantener solo números y una sola coma
+            rawValue = rawValue.replace(/[^\d,]/g, "");
+
+            // Evitar múltiples comas
+            const commaCount = (rawValue.match(/,/g) || []).length;
+            if (commaCount > 1) {
+                // Remueve la última coma si ya había una
+                rawValue = rawValue.slice(0, -1);
+            }
+
+            const parts = rawValue.split(",");
+            let integerPart = parts[0];
+
+            if (integerPart) {
+                // Formatear la parte entera con estilo argentino (puntos de miles)
+                integerPart = new Intl.NumberFormat("es-AR").format(
+                    parseInt(integerPart, 10),
+                );
+            }
+
+            amountInput.value =
+                parts.length > 1 ? `${integerPart},${parts[1]}` : integerPart;
+        });
+
+        form?.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            // Verificación final (por si de alguna forma saltaron el disabled)
+            if (submitBtn && submitBtn.disabled) return;
+            if (typeof validateDates === "function" && !validateDates()) return;
+
+            // Micro-interacción: Estado de Carga
+            if (submitBtn && btnText && btnIcon && btnLoader) {
+                submitBtn.disabled = true;
+                btnText.textContent = "Calculando...";
+                btnIcon.classList.add("hidden");
+                btnLoader.classList.remove("hidden");
+            }
+
+            const formData = new FormData(form);
+
+            // Limpiar el formato visual (puntos) para obtener el valor numérico puro
+            const amountStr = formData.get("amount")?.toString() || "0";
+            const amount = parseFloat(
+                amountStr.replace(/\./g, "").replace(",", "."),
+            );
+            const startMonth = formData.get("startMonth");
+            const startYear = formData.get("startYear");
+            const endMonth = formData.get("endMonth");
+            const endYear = formData.get("endYear");
+
+            // ============================================
+            // LOGICA MATEMATICA DE CALCULO
+            // ============================================
+
+            const performCalc = async () => {
+                const resultContainer =
+                    document.getElementById("result-container");
+                const resultAmount = document.getElementById("result-amount");
+                const resultDesc =
+                    document.getElementById("result-description");
+                const resultInf = document.getElementById("result-inflation");
+                const resultLoss = document.getElementById("result-loss");
+                // Removimos las barras CSS en Result.astro, asi que ya no las invocamos
+
+                if (!resultContainer) {
+                    console.error("No se encontró el result-container!!");
+                    return;
+                }
+
+                // Obtener llaves del JSON
+                const startKey = `${startYear}-${startMonth}`;
+                // Si el año de destino es igual o mayor al actual y estamos en meses del futuro, capeamos al mes actual
+                const date = new Date();
+                const actualYear = date.getFullYear();
+                const actualMonth = date.getMonth() + 1;
+                let finalEndYear = parseInt(endYear as string);
+                let finalEndMonth = parseInt(endMonth as string);
+
+                if (finalEndYear >= actualYear && finalEndMonth > actualMonth) {
+                    finalEndMonth = actualMonth;
+                }
+                const endKey = `${finalEndYear}-${finalEndMonth}`;
+
+                // Type assertion para el objeto JSON
+                const typedInflationData = inflationData as Record<
+                    string,
+                    { adjustedIndex: number; pureIndex: number }
+                >;
+
+                // Fallback de seguridad iterativo si falta algún mes reciente
+                let startIndexValue = 1;
+                let endIndexValue = 1;
+                let startPureIndex = 1;
+                let endPureIndex = 1;
+
+                if (typedInflationData[startKey]) {
+                    startIndexValue =
+                        typedInflationData[startKey].adjustedIndex;
+                    startPureIndex = typedInflationData[startKey].pureIndex;
+                } else {
+                    const values = Object.values(typedInflationData);
+                    const lastEl = values[values.length - 1];
+                    startIndexValue = lastEl.adjustedIndex;
+                    startPureIndex = lastEl.pureIndex;
+                }
+
+                if (typedInflationData[endKey]) {
+                    endIndexValue = typedInflationData[endKey].adjustedIndex;
+                    endPureIndex = typedInflationData[endKey].pureIndex;
+                } else {
+                    const values = Object.values(typedInflationData);
+                    const lastEl = values[values.length - 1];
+                    endIndexValue = lastEl.adjustedIndex;
+                    endPureIndex = lastEl.pureIndex;
+                }
+
+                // Cálculo de valor equivalente (tiene en cuenta los ceros quitados a la moneda)
+                const ratio = endIndexValue / startIndexValue;
+                const calculatedAmount = amount * ratio;
+
+                // Cálculo de Inflación Real y Pérdida de Poder Adquisitivo (usa índice puro de precios)
+                const pureRatio = endPureIndex / startPureIndex;
+                const inflationPercentage = (pureRatio - 1) * 100;
+
+                // Pérdida de valor adquisitivo: 1 - (1 / pureRatio)
+                const lossPercentage =
+                    pureRatio > 1 ? (1 - 1 / pureRatio) * 100 : 0;
+
+                // Renderizado de valores en UI
+                const fmt = new Intl.NumberFormat("es-AR", {
+                    maximumFractionDigits: 2,
+                });
+
+                const fmtCompact = new Intl.NumberFormat("es-AR", {
+                    maximumFractionDigits: 1,
+                    notation:
+                        inflationPercentage > 1000000 ? "compact" : "standard",
+                });
+
+                const labelStart = `${startMonth}/${startYear}`;
+                const labelEnd = `${finalEndMonth}/${finalEndYear}`;
+
+                if (resultAmount)
+                    resultAmount.textContent = fmt.format(calculatedAmount);
+                if (resultDesc) {
+                    resultDesc.innerHTML = `Los <strong>$${fmt.format(amount)}</strong> (valor nominal de <span class="text-primary/90">${labelStart}</span>) equivalen en poder de compra a <strong>$${fmt.format(calculatedAmount)}</strong> en <span class="text-primary/90">${labelEnd}</span>.`;
+                }
+
+                if (resultInf)
+                    resultInf.textContent = `${fmtCompact.format(inflationPercentage)}%`;
+
+                if (resultLoss)
+                    resultLoss.textContent = `-${fmt.format(lossPercentage)}%`;
+
+                // Mostrar el contenedor bajando el "hidden" y aplicando animacion
+                resultContainer.classList.remove("hidden");
+                resultContainer.classList.add("flex");
+
+                // Generar gráfico evolutivo con ECharts
+                try {
+                    const echarts = await import("echarts");
+                    const chartWrapper =
+                        document.getElementById("chart-wrapper");
+                    const chartContainer =
+                        document.getElementById("echarts-container");
+                    if (chartWrapper && chartContainer) {
+                        chartWrapper.classList.remove("hidden");
+                        let myChart = echarts.getInstanceByDom(chartContainer);
+                        if (!myChart) {
+                            myChart = echarts.init(chartContainer);
+                        }
+
+                        let cy = parseInt(startYear as string);
+                        let cm = parseInt(startMonth as string);
+                        const xAxisData = [];
+                        const seriesData = [];
+                        // Si el año de final es menor que el inicial, evitamos loop infinito
+                        if (
+                            cy < finalEndYear ||
+                            (cy === finalEndYear && cm <= finalEndMonth)
+                        ) {
+                            while (
+                                cy < finalEndYear ||
+                                (cy === finalEndYear && cm <= finalEndMonth)
+                            ) {
+                                const k = `${cy}-${cm}`;
+                                xAxisData.push(`${cm}/${cy}`);
+                                if (typedInflationData[k]) {
+                                    seriesData.push(
+                                        typedInflationData[k].adjustedIndex,
+                                    );
+                                } else {
+                                    const vals =
+                                        Object.values(typedInflationData);
+                                    seriesData.push(
+                                        vals[vals.length - 1].adjustedIndex,
+                                    );
+                                }
+                                cm++;
+                                if (cm > 12) {
+                                    cy++;
+                                    cm = 1;
+                                }
+                            }
+                        } else {
+                            // Invertido: causo caída lisa
+                            xAxisData.push(
+                                `${startMonth}/${startYear}`,
+                                `${finalEndMonth}/${finalEndYear}`,
+                            );
+                            seriesData.push(startIndexValue, endIndexValue);
+                        }
+
+                        const isDark =
+                            document.documentElement.classList.contains("dark");
+                        const textColor = isDark
+                            ? "rgba(255,255,255,0.6)"
+                            : "rgba(0,0,0,0.6)";
+                        const tooltipBg = isDark
+                            ? "rgba(0,0,0,0.8)"
+                            : "rgba(255,255,255,0.9)";
+                        const tooltipBorder = isDark
+                            ? "rgba(255,255,255,0.1)"
+                            : "rgba(0,0,0,0.1)";
+                        const tooltipText = isDark ? "#fff" : "#000";
+
+                        const option = {
+                            tooltip: {
+                                trigger: "axis",
+                                backgroundColor: tooltipBg,
+                                borderColor: tooltipBorder,
+                                textStyle: {
+                                    color: tooltipText,
+                                    fontSize: 13,
+                                    fontFamily: "Onest Variable, sans-serif",
+                                },
+                                formatter: function (params: any) {
+                                    let label = params[0].name;
+                                    let value = new Intl.NumberFormat("es-AR", {
+                                        notation: "compact",
+                                        maximumFractionDigits: 1,
+                                    }).format(params[0].value);
+                                    return `<b>${label}</b><br/>Índice: ${value}`;
+                                },
+                            },
+                            grid: {
+                                top: 10,
+                                right: 0,
+                                bottom: 20,
+                                left: 0,
+                                containLabel: false,
+                            },
+                            xAxis: {
+                                type: "category",
+                                boundaryGap: false,
+                                data: xAxisData,
+                                show: false,
+                            },
+                            yAxis: {
+                                type: "log",
+                                show: false,
+                                min: "dataMin",
+                            },
+                            series: [
+                                {
+                                    name: "Índice",
+                                    type: "line",
+                                    data: seriesData,
+                                    smooth: 0.3,
+                                    symbol: "none",
+                                    lineStyle: {
+                                        color: "#0070F3",
+                                        width: 3,
+                                    },
+                                    itemStyle: {
+                                        color: "#0070F3",
+                                    },
+                                    areaStyle: {
+                                        color: new echarts.graphic.LinearGradient(
+                                            0,
+                                            0,
+                                            0,
+                                            1,
+                                            [
+                                                {
+                                                    offset: 0,
+                                                    color: "rgba(0, 112, 243, 0.4)",
+                                                },
+                                                {
+                                                    offset: 1,
+                                                    color: "rgba(0, 112, 243, 0.0)",
+                                                },
+                                            ],
+                                        ),
+                                    },
+                                },
+                            ],
+                        };
+
+                        myChart.setOption(option);
+
+                        // Asegurar que el gráfico se redimensione si cambia la ventana
+                        window.addEventListener("resize", () => {
+                            myChart?.resize();
+                        });
+                    }
+                } catch (e) {
+                    console.error(
+                        "No se pudo cargar o inicializar el gráfico ECharts",
+                        e,
+                    );
+                }
+
+                // Actualizar labels del header del recibo (que definimos en Result.astro)
+                const labelOriginEl = document.getElementById("label-origin");
+                const labelDestEl = document.getElementById("label-dest");
+                if (labelOriginEl)
+                    labelOriginEl.textContent = `${startMonth?.toString().padStart(2, "0")}/${startYear}`;
+                if (labelDestEl)
+                    labelDestEl.textContent = `${finalEndMonth.toString().padStart(2, "0")}/${finalEndYear}`;
+
+                // Hacer scroll suave
+                setTimeout(() => {
+                    resultContainer.scrollIntoView({
+                        behavior: "smooth",
+                        block: "nearest",
+                    });
+                }, 100);
+            };
+
+            // Retrasar artificialmente unos ms para UX "Premium" y mostrar el loader
+            setTimeout(async () => {
+                await performCalc();
+
+                // Restaurar estado del botón
+                if (submitBtn && btnText && btnIcon && btnLoader) {
+                    submitBtn.disabled = false;
+                    btnText.textContent = "Calcular inflación";
+                    btnIcon.classList.remove("hidden");
+                    btnLoader.classList.add("hidden");
+                }
+            }, 350);
+        });
+    };
+
+    // Ejecutar en carga normal (sin ViewTransitions)
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initInflationCalculator);
+    } else {
+        initInflationCalculator();
+    }
+
+    // Ejecutar si se navega vía Astro ViewTransitions
+    document.addEventListener("astro:page-load", initInflationCalculator);
+</script>

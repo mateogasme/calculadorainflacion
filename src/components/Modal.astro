@@ -1,0 +1,137 @@
+---
+import CloseIcon from "../assets/icons/close.svg";
+
+interface Props {
+    id: string;
+    title: string;
+}
+
+const { id, title } = Astro.props;
+---
+
+<dialog
+    id={id}
+    class="custom-modal fixed inset-0 z-[100] m-auto w-[90%] max-w-sm rounded-[24px] bg-secondary p-0 shadow-2xl shadow-black/20 text-primary border border-primary/5 transition-all duration-300 mt-[250px]"
+>
+    <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold tracking-tight">{title}</h3>
+            <button
+                data-close-modal
+                class="text-primary/60 hover:text-primary transition-colors rounded-lg p-1.5 hover:bg-primary/5 outline-none"
+            >
+                <CloseIcon class="w-[18px] h-[18px]" />
+            </button>
+        </div>
+        <div class="flex flex-col gap-5 text-primary/80">
+            <slot />
+        </div>
+    </div>
+</dialog>
+
+<script>
+    const setupModals = () => {
+        const modals = document.querySelectorAll(".custom-modal");
+
+        modals.forEach((modalElement) => {
+            const modal = modalElement as HTMLDialogElement;
+            const btnClose = modal.querySelector("[data-close-modal]");
+            const id = modal.getAttribute("id");
+            const openButtons = document.querySelectorAll(
+                `[data-open-modal="${id}"]`,
+            );
+
+            const closeModal = () => {
+                modal.classList.add("closing");
+                setTimeout(() => {
+                    modal.close();
+                    modal.classList.remove("closing");
+                    document.body.classList.remove("modal-open");
+                }, 300); // 300ms coincides con la transición CSS
+            };
+
+            openButtons.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    modal.showModal();
+                    document.body.classList.add("modal-open");
+                });
+            });
+
+            btnClose?.addEventListener("click", closeModal);
+
+            modal.addEventListener("click", (e) => {
+                const dialogDimensions = modal.getBoundingClientRect();
+                if (
+                    e.clientX < dialogDimensions.left ||
+                    e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top ||
+                    e.clientY > dialogDimensions.bottom
+                ) {
+                    closeModal();
+                }
+            });
+
+            modal.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") {
+                    e.preventDefault();
+                    closeModal();
+                }
+            });
+        });
+    };
+
+    // Inicializar lógica de los modales genéricos
+    setupModals();
+    // Soporte para transiciones de vista de Astro (si se usan en el futuro)
+    document.addEventListener("astro:page-load", setupModals);
+</script>
+
+<style>
+    /* Utilizando la nueva característica @starting-style de CSS para transiciones super fluidas */
+    dialog.custom-modal {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+        transition:
+            opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+            display 0.3s allow-discrete;
+    }
+
+    dialog.custom-modal[open] {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        @starting-style {
+            opacity: 0;
+            transform: scale(0.95) translateY(10px);
+        }
+    }
+
+    dialog.custom-modal.closing {
+        opacity: 0 !important;
+        transform: scale(0.95) translateY(10px) !important;
+    }
+
+    /* Fondo semitransparente oscuro (backdrop) */
+    dialog.custom-modal::backdrop {
+        background-color: rgba(0, 0, 0, 0);
+        backdrop-filter: blur(0px);
+        transition:
+            background-color 0.3s ease,
+            backdrop-filter 0.3s ease,
+            display 0.3s allow-discrete;
+    }
+
+    dialog.custom-modal[open]::backdrop {
+        background-color: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(8px);
+        @starting-style {
+            background-color: rgba(0, 0, 0, 0);
+            backdrop-filter: blur(0px);
+        }
+    }
+
+    dialog.custom-modal.closing::backdrop {
+        background-color: rgba(0, 0, 0, 0) !important;
+        backdrop-filter: blur(0px) !important;
+    }
+</style>

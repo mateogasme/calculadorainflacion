@@ -1,0 +1,60 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../sections/Header.astro";
+import Hero from "../sections/Hero.astro";
+import Calculator from "../sections/Calculator.astro";
+import Result from "../sections/Result.astro";
+
+const schema = JSON.stringify({
+	"@context": "https://schema.org",
+	"@graph": [
+		{
+			"@type": "Organization",
+			"@id": "https://datosar.com/#organization",
+			name: "DatosAR",
+			url: "https://datosar.com/",
+			logo: "https://datosar.com/favicon.svg",
+			sameAs: ["https://github.com/mateogasme"],
+		},
+		{
+			"@type": "WebSite",
+			"@id": "https://datosar.com/#website",
+			name: "DatosAR",
+			url: "https://datosar.com/",
+			inLanguage: "es-AR",
+			publisher: { "@id": "https://datosar.com/#organization" },
+		},
+		{
+			"@type": ["WebApplication", "FinancialProduct"],
+			"@id": "https://datosar.com/#webapp-inflacion",
+			name: "Calculadora de Inflación Argentina",
+			applicationCategory: "FinanceApplication",
+			operatingSystem: "All",
+			inLanguage: "es-AR",
+			description:
+				"Calculadora de inflación acumulada en Argentina desde 1950 hasta hoy. Nos basamos en fuentes oficiales y fidedignas (INDEC).",
+			url: "https://datosar.com/",
+			isPartOf: { "@id": "https://datosar.com/#website" },
+			offers: {
+				"@type": "Offer",
+				price: "0",
+				priceCurrency: "ARS",
+			},
+		},
+	],
+});
+---
+
+<Layout
+	title="Calculadora de Inflación Argentina (1950-2026) | Datos Oficiales INDEC"
+	description="Calculadora de inflación acumulada de Argentina desde 1950 hasta hoy. Nos basamos en fuentes oficiales y fidedignas para garantizar precisión matemática."
+	url="https://datosar.com/"
+	schema={schema}
+>
+	<Header />
+	<main>
+		<Hero />
+		<Calculator />
+		<Result />
+	</main>
+</Layout>

@@ -1,0 +1,137 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "@fontsource-variable/onest";
+import "../styles/global.css";
+
+export interface Props {
+	title: string;
+	description: string;
+	url?: string;
+	image?: string;
+	schema?: string;
+	noindex?: boolean;
+}
+
+const {
+	title,
+	description,
+	url,
+	image = "https://datosar.com/og-image.svg",
+	schema,
+	noindex = false,
+} = Astro.props;
+const siteUrl = "https://datosar.com";
+const currentUrl = url ?? Astro.url?.toString() ?? siteUrl;
+---
+
+<!doctype html>
+<html lang="es-AR">
+	<head>
+		<ClientRouter />
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+
+		<!-- Favicon -->
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+
+		<!-- Title -->
+		<title>{title}</title>
+
+		<!-- Description -->
+		<meta name="description" content={description} />
+		<meta name="author" content="DatosAR" />
+		<meta name="theme-color" content="#004ACA" />
+		<meta
+			name="robots"
+			content={noindex
+				? "noindex, nofollow"
+				: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
+		/>
+		<meta
+			name="googlebot"
+			content={noindex
+				? "noindex, nofollow"
+				: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
+		/>
+		<link rel="canonical" href={currentUrl} />
+		<link rel="alternate" hreflang="es-AR" href={currentUrl} />
+		<link rel="alternate" hreflang="x-default" href={currentUrl} />
+
+		<!-- Open Graph / Meta Tags -->
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_AR" />
+		<meta property="og:site_name" content="DatosAR" />
+		<meta property="og:url" content={currentUrl} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={image} />
+		<meta property="og:image:width" content="1024" />
+		<meta property="og:image:height" content="1024" />
+		<meta
+			property="og:image:alt"
+			content="DatosAR - Calculadoras de inflación y salario real en Argentina"
+		/>
+
+		<!-- X (Twitter) -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={currentUrl} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={image} />
+
+		<!-- Schema Markup (Structured Data) -->
+		{schema && <script type="application/ld+json" set:html={schema} />}
+
+		<!-- Script para el modo oscuro/claro -->
+		<script is:inline>
+			const applyTheme = () => {
+				const theme = (() => {
+					if (
+						typeof localStorage !== "undefined" &&
+						localStorage.getItem("theme")
+					) {
+						return localStorage.getItem("theme");
+					}
+					if (
+						window.matchMedia("(prefers-color-scheme: dark)")
+							.matches
+					) {
+						return "dark";
+					}
+					return "light";
+				})();
+				if (theme === "dark") {
+					document.documentElement.classList.add("dark");
+				} else {
+					document.documentElement.classList.remove("dark");
+				}
+				window.localStorage.setItem("theme", theme);
+			};
+
+			applyTheme();
+
+			// Prevenir que ViewTransitions elimine la clase "dark" al cambiar de página
+			document.addEventListener("astro:after-swap", applyTheme);
+		</script>
+	</head>
+	<body class="bg-secondary text-primary font-sans antialiased">
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	html {
+		scrollbar-gutter: stable;
+	}
+
+	.modal-open {
+		overflow: hidden;
+	}
+
+	html,
+	body {
+		margin: 0;
+		min-height: 100vh;
+	}
+</style>
