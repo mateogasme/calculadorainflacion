@@ -294,8 +294,6 @@ const years = Array.from(
 </section>
 
 <script>
-    import inflationData from "../data/inflation.json";
-
     const initInflationCalculator = () => {
         const form = document.getElementById(
             "inflation-form",
@@ -463,6 +461,8 @@ const years = Array.from(
                 const endKey = `${finalEndYear}-${finalEndMonth}`;
 
                 // Type assertion para el objeto JSON
+                const { default: inflationData } =
+                    await import("../data/inflation.json");
                 const typedInflationData = inflationData as Record<
                     string,
                     { adjustedIndex: number; pureIndex: number }
@@ -539,7 +539,23 @@ const years = Array.from(
 
                 // Generar gráfico evolutivo con ECharts
                 try {
-                    const echarts = await import("echarts");
+                    const echarts = await import("echarts/core");
+                    const { LineChart } = await import("echarts/charts");
+                    const { TooltipComponent, GridComponent } =
+                        await import("echarts/components");
+                    const { CanvasRenderer } =
+                        await import("echarts/renderers");
+                    const { GraphicComponent } =
+                        await import("echarts/components");
+
+                    echarts.use([
+                        LineChart,
+                        TooltipComponent,
+                        GridComponent,
+                        CanvasRenderer,
+                        GraphicComponent,
+                    ]);
+
                     const chartWrapper =
                         document.getElementById("chart-wrapper");
                     const chartContainer =

@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "tailwind-animations";
 
+@font-face {
+  font-family: 'Onest Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/onest.woff2') format('woff2');
+}
+
 @theme {
   --font-sans: 'Onest Variable', sans-serif;
   --color-primary: var(--primary);

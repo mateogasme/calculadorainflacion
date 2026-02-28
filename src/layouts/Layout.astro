@@ -1,6 +1,5 @@
 ---
 import { ClientRouter } from "astro:transitions";
-import "@fontsource-variable/onest";
 import "../styles/global.css";
 
 export interface Props {
@@ -30,6 +29,15 @@ const currentUrl = url ?? Astro.url?.toString() ?? siteUrl;
 		<ClientRouter />
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
+
+		<!-- Preload Font -->
+		<link
+			rel="preload"
+			href="/fonts/onest.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin="anonymous"
+		/>
 
 		<!-- Favicon -->
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -86,32 +94,27 @@ const currentUrl = url ?? Astro.url?.toString() ?? siteUrl;
 		<!-- Script para el modo oscuro/claro -->
 		<script is:inline>
 			const applyTheme = () => {
-				const theme = (() => {
+				const e = (() => {
 					if (
 						typeof localStorage !== "undefined" &&
 						localStorage.getItem("theme")
-					) {
+					)
 						return localStorage.getItem("theme");
-					}
 					if (
 						window.matchMedia("(prefers-color-scheme: dark)")
 							.matches
-					) {
+					)
 						return "dark";
-					}
 					return "light";
 				})();
-				if (theme === "dark") {
+				if (e === "dark") {
 					document.documentElement.classList.add("dark");
 				} else {
 					document.documentElement.classList.remove("dark");
 				}
-				window.localStorage.setItem("theme", theme);
+				window.localStorage.setItem("theme", e);
 			};
-
 			applyTheme();
-
-			// Prevenir que ViewTransitions elimine la clase "dark" al cambiar de página
 			document.addEventListener("astro:after-swap", applyTheme);
 		</script>
 	</head>
