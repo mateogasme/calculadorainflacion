@@ -545,13 +545,10 @@ const irregularYears = [
                 }
                 const endKey = `${finalEndYear}-${finalEndMonth}`;
 
-                // Type assertion para el objeto JSON
-                const { default: inflationData } =
-                    await import("../data/inflation.json");
-                const typedInflationData = inflationData as Record<
-                    string,
-                    { adjustedIndex: number; pureIndex: number }
-                >;
+                // Obtaining inflation data dynamically with INDEC API overrides
+                const { fetchInflationData } =
+                    await import("../utils/inflationFetcher");
+                const typedInflationData = await fetchInflationData();
 
                 // Fallback de seguridad iterativo si falta algún mes reciente
                 let startIndexValue = 1;

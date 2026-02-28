@@ -487,8 +487,6 @@ const irregularYears = [
 </section>
 
 <script>
-    import inflationData from "../data/inflation.json";
-
     const initCalculator = () => {
         const form = document.getElementById("salary-form") as HTMLFormElement;
 
@@ -751,7 +749,7 @@ const irregularYears = [
                     ? formData.get("endYearAct")
                     : formData.get("endYearComp");
 
-            const performCalc = () => {
+            const performCalc = async () => {
                 const resultContainer =
                     document.getElementById("result-container");
                 const resultIdealAmount = document.getElementById(
@@ -776,10 +774,9 @@ const irregularYears = [
                 }
                 const endKey = `${finalEndYear}-${finalEndMonth}`;
 
-                const typedData = inflationData as Record<
-                    string,
-                    { adjustedIndex: number }
-                >;
+                const { fetchInflationData } =
+                    await import("../utils/inflationFetcher");
+                const typedData = await fetchInflationData();
 
                 let startIndexValue = 1;
                 let endIndexValue = 1;
@@ -894,8 +891,8 @@ const irregularYears = [
                 );
             };
 
-            setTimeout(() => {
-                performCalc();
+            setTimeout(async () => {
+                await performCalc();
                 if (submitBtn && btnText && btnIcon && btnLoader) {
                     submitBtn.disabled = false;
                     btnText.textContent =
