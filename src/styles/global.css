@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tailwind-animations";
 
+/* Configurar dark mode por clase en lugar de prefers-color-scheme */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @font-face {
   font-family: 'Onest Variable';
   font-style: normal;
