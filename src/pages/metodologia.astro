@@ -109,113 +109,105 @@ const schema = JSON.stringify({
                 </p>
             </section>
 
-            <!-- Bloque 2 -->
+            <!-- Bloque 2: Períodos y Referencia de Fuentes -->
             <section
                 class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-200"
             >
                 <div class="flex items-center gap-3 mb-4">
                     <h2 class="text-xl font-bold text-primary tracking-tight">
-                        El Período Reciente (1992 - Presente)
+                        Períodos y Referencia de Fuentes
                     </h2>
                 </div>
-                <p class="text-[15px] leading-relaxed text-primary/80 mb-5">
-                    Para los últimos 34 años, <strong
-                        >utilizamos datos mensuales hiper-precisos</strong
-                    >. Conseguimos una base de datos histórica con un empalme
-                    riguroso que une y cruza las siguientes fuentes de rigor
-                    económico:
+                <p class="text-[15px] leading-relaxed text-primary/80 mb-6">
+                    Para abarcar más de 70 años de historia económica con la
+                    mayor fidelidad posible, nuestro motor se alimenta de un
+                    empalme de estadisticas de rigor técnico. Construimos esta
+                    serie ininterrumpida combinando tres grandes fuentes de
+                    datos en base a la época metodológica de Argentina:
                 </p>
-                <ul
-                    class="flex flex-col gap-4 text-[14px] text-primary/70 ml-1.5"
-                >
-                    <li class="flex items-start gap-3">
-                        <span class="text-blue mt-0.5 font-bold">•</span>
-                        <span class="leading-relaxed"
-                            ><strong
-                                >Índice de Precios al Consumidor (INDEC):</strong
-                            > Utilizamos la serie oficial del nivel general del IPC.</span
-                        >
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="text-blue mt-0.5 font-bold">•</span>
-                        <span class="leading-relaxed"
-                            ><strong
-                                >MIT Sloan Research (Alberto Cavallo):</strong
-                            > Durante la <a
-                                class="text-blue hover:underline underline-offset-2 transition-colors"
+
+                <div class="flex flex-col gap-6 text-[14.5px] text-primary/80">
+                    <!-- Era Moderna -->
+                    <article class="flex flex-col gap-2.5">
+                        <h3 class="font-bold text-primary text-[15.5px]">
+                            1. La Era Moderna (1992 - Presente)
+                        </h3>
+                        <p class="leading-relaxed">
+                            Utilizamos <strong
+                                >datos mensuales hiper-precisos</strong
+                            > extraídos del Nivel General del Índice de Precios al
+                            Consumidor (IPC). La fuente primaria y verificable para
+                            todo este tramo final es el mismísimo <strong
+                                >INDEC</strong
+                            >.
+                        </p>
+                        <p class="leading-relaxed">
+                            <strong>La Excepción (2007-2015):</strong> Para compensar
+                            la comprobada intervención y manipulación de las estadísticas
+                            públicas ocurrida durante esos años, cruzamos y sobre-escribimos
+                            temporalmente nuestra base oficial utilizando los datos
+                            depurados de la investigación académica "The Billion Prices
+                            Project" del <strong>MIT</strong> (Massachusetts Institute
+                            of Technology), devolviéndole legitimidad real a tus cálculos
+                            en esa década.
+                        </p>
+                        <div class="flex flex-wrap gap-x-6 gap-y-3 mt-1.5">
+                            <a
+                                class="text-blue hover:text-blue/80 hover:underline underline-offset-4 transition-all font-medium text-[13.5px] flex items-center gap-1.5"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                href="https://chequeado.com/el-explicador/que-fue-la-intervencion-del-indec-y-como-impacto-en-los-datos/"
-                                >intervención del INDEC (aprox. 2007-2015) <ExternalLinkIcon
-                                    class="w-3.5 h-3.5 inline mb-0.5"
-                                /></a
-                            >, las cifras oficiales de inflación eran falsas y
-                            perdieron su rigor estadístico. Por lo tanto, para
-                            este lapso de años específicos, cruzamos y
-                            sobre-escribimos la base de datos con los resultados
-                            del paper de investigación del MIT ("The Billion
-                            Prices Project") que recopiló y rearmó el IPC real
-                            (Índices Congreso y supermercados) para devolverle
-                            legitimidad estadística a nuestros cálculos.</span
-                        >
-                    </li>
-                </ul>
-            </section>
+                                href="https://www.indec.gob.ar/indec/web/Nivel4-Tema-3-5-31"
+                            >
+                                Informes Oficiales del INDEC <ExternalLinkIcon
+                                    class="w-3.5 h-3.5"
+                                />
+                            </a>
+                            <a
+                                class="text-blue hover:text-blue/80 hover:underline underline-offset-4 transition-all font-medium text-[13.5px] flex items-center gap-1.5"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href="https://www.thebillionpricesproject.com/argentina/"
+                            >
+                                The Billion Prices Project (MIT) <ExternalLinkIcon
+                                    class="w-3.5 h-3.5"
+                                />
+                            </a>
+                        </div>
+                    </article>
 
-            <!-- Bloque 3 -->
-            <section
-                class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-300"
-            >
-                <div class="flex items-center gap-3 mb-4">
-                    <h2 class="text-xl font-bold text-primary tracking-tight">
-                        El Período Histórico (1950 - 1991)
-                    </h2>
-                </div>
-                <p class="text-[15px] leading-relaxed text-primary/80 mb-5">
-                    Para el período previo a 1992, los datos digitalizados <em
-                        >mensuales</em
-                    > para el cruce de APIs públicas no son accesibles con fiabilidad.
-                    Por este motivo:
-                </p>
-                <ul
-                    class="flex flex-col gap-4 text-[14px] text-primary/70 ml-1.5"
-                >
-                    <li class="flex items-start gap-3">
-                        <span class="text-primary/40 mt-0.5 font-bold">•</span>
-                        <span class="leading-relaxed"
-                            >La data <strong>anual</strong> de este período <strong
-                                >es 100% precisa y real</strong
-                            >, recabando base a la serie histórica consensuada
-                            de OJF (Orlando J. Ferreres) y los archivos
-                            históricos en papel del INDEC.</span
-                        >
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="text-primary/40 mt-0.5 font-bold">•</span>
-                        <span class="leading-relaxed"
-                            >La curva <em>mensual</em> entre enero y diciembre se
-                            genera de manera geométrica, distribuyendo el salto anual
-                            documentado en 12 escaños mensuales perfectos.</span
-                        >
-                    </li>
-                </ul>
-                <div
-                    class="mt-6 p-4 rounded-xl border border-primary/5 bg-primary/[0.02]"
-                >
-                    <p
-                        class="text-[13px] leading-relaxed text-primary/60 font-medium"
-                    >
-                        <strong>Información técnica:</strong> Esto asegura rentabilidad
-                        real si evaluás un rango de años enteros de los ochentas o
-                        setentas. Adviértase sin embargo que, si calculás meses intermedios
-                        muy puntuales dentro de 1989 o 1990 (la hiperinflación), la
-                        curva será algorítmicamente suavizada, omitiendo los "picos"
-                        asimétricos diarios que sucedieron en esa época.
-                    </p>
+                    <div class="h-px w-full bg-primary/5"></div>
+
+                    <!-- Período Histórico -->
+                    <article class="flex flex-col gap-2.5">
+                        <h3 class="font-bold text-primary text-[15.5px]">
+                            2. El Período Histórico (1950 - 1991)
+                        </h3>
+                        <p class="leading-relaxed">
+                            Ante la falta de digitalización confiable <em
+                                >mes a mes</em
+                            > de las bases públicas arcaicas, operamos sobre la serie
+                            consensuada que consolidaron a lo largo de los años <strong
+                                >Orlando J. Ferreres y el Banco Central</strong
+                            >.
+                        </p>
+                        <p class="leading-relaxed">
+                            Esta fuente garantiza una <strong
+                                >precisión absoluta a nivel anual</strong
+                            >, y nuestro motor de datos engendra la fluctuación
+                            de los meses intermedios (enero a diciembre)
+                            mediante una distribución geométrica regular. Es
+                            decir, calcular las hiperinflaciones exactas de 1989
+                            entre febrero y marzo te arrojará un algoritmo
+                            suavizado en vez de representar la asimetría
+                            explosiva diaria que realmente se vivió en la calle
+                            durante esas oscilaciones; sin influir esto
+                            matemáticamente en el pozo total del año.
+                        </p>
+                    </article>
                 </div>
             </section>
 
-            <!-- Bloque 4 -->
+            <!-- Bloque 5 -->
             <section
                 class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-400"
             >
@@ -333,7 +325,7 @@ const schema = JSON.stringify({
                 </div>
             </section>
 
-            <!-- Bloque 5 -->
+            <!-- Bloque 6 -->
             <section
                 class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-500"
             >
@@ -375,7 +367,7 @@ const schema = JSON.stringify({
                 </p>
             </section>
 
-            <!-- Bloque 6 -->
+            <!-- Bloque 7 -->
             <section
                 class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-600"
             >
@@ -418,7 +410,7 @@ const schema = JSON.stringify({
                 </ul>
             </section>
 
-            <!-- Bloque 7 -->
+            <!-- Bloque 8 -->
             <section
                 class="p-6 md:p-8 rounded-[24px] border border-primary/5 bg-primary/[0.015] shadow-sm animate-fade-in-up animate-delay-700"
             >
