@@ -41,13 +41,13 @@ const irregularYears = [
                 <label for="amount" class="text-sm font-medium text-primary/80">
                     Monto a comparar
                 </label>
-                <p class="text-[12px] text-primary/40 -mt-1 mb-0.5">
+                <p class="text-[12px] text-primary/60 -mt-1 mb-0.5">
                     Ingresá el monto que querés actualizar (ej: el precio de un
                     kilo de pan).
                 </p>
                 <div class="relative group">
                     <span
-                        class="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 font-medium group-focus-within:text-blue"
+                        class="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 font-medium group-focus-within:text-blue transition-colors"
                     >
                         $
                     </span>
@@ -58,7 +58,7 @@ const irregularYears = [
                         name="amount"
                         placeholder="1.000"
                         required
-                        class="w-full pl-9 pr-4 py-3.5 bg-secondary border border-primary/10 rounded-xl text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue placeholder:text-primary/30 shadow-none"
+                        class="w-full pl-9 pr-4 py-3.5 bg-secondary border border-primary/10 rounded-xl text-primary font-medium focus:outline-none focus:ring-[3px] focus:ring-blue/20 focus:border-blue placeholder:text-primary/50 shadow-none transition-all"
                     />
                 </div>
             </div>
@@ -78,7 +78,7 @@ const irregularYears = [
                         ></span>
                         Fecha de origen
                     </label>
-                    <p class="text-[12px] text-primary/40 -mt-1.5 mb-0.5 ml-4">
+                    <p class="text-[12px] text-primary/60 -mt-1.5 mb-0.5 ml-4">
                         ¿Cuándo valía ese monto?
                     </p>
                     <div class="flex gap-2.5">
@@ -153,7 +153,7 @@ const irregularYears = [
                         <span class="w-2 h-2 rounded-full bg-blue"></span>
                         Fecha de destino
                     </label>
-                    <p class="text-[12px] text-primary/40 -mt-1.5 mb-0.5 ml-4">
+                    <p class="text-[12px] text-primary/60 -mt-1.5 mb-0.5 ml-4">
                         ¿Hasta qué fecha querés calcular el impacto?
                     </p>
                     <div class="flex gap-2.5">
@@ -406,17 +406,43 @@ const irregularYears = [
             const em = parseInt(endMonthSelect.value, 10);
             const ey = parseInt(endYearSelect.value, 10);
 
-            // Verificamos si la fecha de origen es mayor al destino
-            if (sy > ey || (sy === ey && sm > em)) {
-                dateError.classList.remove("hidden");
-                dateError.classList.add("flex");
-                submitBtn.disabled = true;
-                return false;
+            // Lógica de deshabilitado dinámico (UX) para evitar errores, deshabilitando opciones irreales
+            Array.from(endYearSelect.options).forEach((opt) => {
+                const optYear = parseInt(opt.value, 10);
+                (opt as HTMLOptionElement).disabled = optYear < sy;
+            });
+
+            if (ey === sy) {
+                Array.from(endMonthSelect.options).forEach((opt) => {
+                    const optMonth = parseInt(opt.value, 10);
+                    (opt as HTMLOptionElement).disabled = optMonth < sm;
+                });
+                if (em < sm) {
+                    endMonthSelect.value = sm.toString(); // forzar al mismo mes si quedó seleccionado un mes obsoleto
+                }
             } else {
-                dateError.classList.add("hidden");
-                dateError.classList.remove("flex");
-                submitBtn.disabled = false;
+                Array.from(endMonthSelect.options).forEach((opt) => {
+                    (opt as HTMLOptionElement).disabled = false;
+                });
             }
+
+            if (sy > ey) {
+                endYearSelect.value = sy.toString();
+                // revalidar meses
+                const tempSm = parseInt(startMonthSelect.value, 10);
+                Array.from(endMonthSelect.options).forEach((opt) => {
+                    const optMonth = parseInt(opt.value, 10);
+                    (opt as HTMLOptionElement).disabled = optMonth < tempSm;
+                });
+                if (parseInt(endMonthSelect.value, 10) < tempSm) {
+                    endMonthSelect.value = tempSm.toString();
+                }
+            }
+
+            // Ocultar caja de error ya que la UI ya imposibilita fechas incorrectas
+            dateError.classList.add("hidden");
+            dateError.classList.remove("flex");
+            submitBtn.disabled = false;
 
             // Mostrar/ocultar advertencia
             const irregularWarning =
@@ -603,185 +629,96 @@ const irregularYears = [
                 const labelStart = `${startMonth}/${startYear}`;
                 const labelEnd = `${finalEndMonth}/${finalEndYear}`;
 
+                // Mostrar el contenedor y scrollear suavemente a el
+                resultContainer.classList.remove("hidden");
+                resultContainer.classList.add("flex");
+                setTimeout(() => {
+                    resultContainer.scrollIntoView({
+                        behavior: "smooth",
+                        block: "nearest",
+                    });
+                }, 100);
+
+                // Función auxiliar para animar números (Count-up animation)
+                const animateValue = (
+                    element: Element,
+                    start: number,
+                    end: number,
+                    duration: number,
+                    formatter: (val: number) => string,
+                ) => {
+                    let startTimestamp: number | null = null;
+                    const step = (timestamp: number) => {
+                        if (!startTimestamp) startTimestamp = timestamp;
+                        const progress = Math.min(
+                            (timestamp - startTimestamp) / duration,
+                            1,
+                        );
+                        // Ease Out Quint para un recuento natural
+                        const easeProgress = 1 - Math.pow(1 - progress, 5);
+                        const currentVal = start + (end - start) * easeProgress;
+                        element.textContent = formatter(currentVal);
+                        if (progress < 1) {
+                            window.requestAnimationFrame(step);
+                        } else {
+                            element.textContent = formatter(end); // asegurar redondeo final
+                        }
+                    };
+                    window.requestAnimationFrame(step);
+                };
+
                 if (resultAmount)
-                    resultAmount.textContent = fmt.format(calculatedAmount);
+                    animateValue(
+                        resultAmount,
+                        0,
+                        calculatedAmount,
+                        1500,
+                        (val) => fmt.format(val),
+                    );
+
                 if (resultDesc) {
                     resultDesc.innerHTML = `Los <strong>$${fmt.format(amount)}</strong> (valor nominal de <span class="text-primary/90">${labelStart}</span>) equivalen en poder de compra a <strong>$${fmt.format(calculatedAmount)}</strong> en <span class="text-primary/90">${labelEnd}</span>.`;
                 }
 
                 if (resultInf)
-                    resultInf.textContent = `${fmtCompact.format(inflationPercentage)}%`;
+                    animateValue(
+                        resultInf,
+                        0,
+                        inflationPercentage,
+                        1500,
+                        (val) => `${fmtCompact.format(val)}%`,
+                    );
 
                 if (resultLoss)
-                    resultLoss.textContent = `-${fmt.format(lossPercentage)}%`;
+                    animateValue(
+                        resultLoss,
+                        0,
+                        lossPercentage,
+                        1500,
+                        (val) => `-${fmt.format(val)}%`,
+                    );
 
-                // Mostrar el contenedor bajando el "hidden" y aplicando animacion
-                resultContainer.classList.remove("hidden");
-                resultContainer.classList.add("flex");
-
-                // Generar gráfico evolutivo con ECharts
+                // Generar gráfico evolutivo con ECharts extraído
                 try {
-                    const echarts = await import("echarts/core");
-                    const { LineChart } = await import("echarts/charts");
-                    const { TooltipComponent, GridComponent } =
-                        await import("echarts/components");
-                    const { CanvasRenderer } =
-                        await import("echarts/renderers");
-                    const { GraphicComponent } =
-                        await import("echarts/components");
-
-                    echarts.use([
-                        LineChart,
-                        TooltipComponent,
-                        GridComponent,
-                        CanvasRenderer,
-                        GraphicComponent,
-                    ]);
-
-                    const chartWrapper =
-                        document.getElementById("chart-wrapper");
+                    const { renderInflationChart } =
+                        await import("../utils/chartRenderer");
                     const chartContainer =
                         document.getElementById("echarts-container");
+                    const chartWrapper =
+                        document.getElementById("chart-wrapper");
                     if (chartWrapper && chartContainer) {
                         chartWrapper.classList.remove("hidden");
-                        let myChart = echarts.getInstanceByDom(chartContainer);
-                        if (!myChart) {
-                            myChart = echarts.init(chartContainer);
-                        }
 
-                        let cy = parseInt(startYear as string);
-                        let cm = parseInt(startMonth as string);
-                        const xAxisData = [];
-                        const seriesData = [];
-                        // Si el año de final es menor que el inicial, evitamos loop infinito
-                        if (
-                            cy < finalEndYear ||
-                            (cy === finalEndYear && cm <= finalEndMonth)
-                        ) {
-                            while (
-                                cy < finalEndYear ||
-                                (cy === finalEndYear && cm <= finalEndMonth)
-                            ) {
-                                const k = `${cy}-${cm}`;
-                                xAxisData.push(`${cm}/${cy}`);
-                                if (typedInflationData[k]) {
-                                    seriesData.push(
-                                        typedInflationData[k].adjustedIndex,
-                                    );
-                                } else {
-                                    const vals =
-                                        Object.values(typedInflationData);
-                                    seriesData.push(
-                                        vals[vals.length - 1].adjustedIndex,
-                                    );
-                                }
-                                cm++;
-                                if (cm > 12) {
-                                    cy++;
-                                    cm = 1;
-                                }
-                            }
-                        } else {
-                            // Invertido: causo caída lisa
-                            xAxisData.push(
-                                `${startMonth}/${startYear}`,
-                                `${finalEndMonth}/${finalEndYear}`,
-                            );
-                            seriesData.push(startIndexValue, endIndexValue);
-                        }
-
-                        const isDark =
-                            document.documentElement.classList.contains("dark");
-                        const textColor = isDark
-                            ? "rgba(255,255,255,0.6)"
-                            : "rgba(0,0,0,0.6)";
-                        const tooltipBg = isDark
-                            ? "rgba(0,0,0,0.8)"
-                            : "rgba(255,255,255,0.9)";
-                        const tooltipBorder = isDark
-                            ? "rgba(255,255,255,0.1)"
-                            : "rgba(0,0,0,0.1)";
-                        const tooltipText = isDark ? "#fff" : "#000";
-
-                        const option = {
-                            tooltip: {
-                                trigger: "axis",
-                                backgroundColor: tooltipBg,
-                                borderColor: tooltipBorder,
-                                textStyle: {
-                                    color: tooltipText,
-                                    fontSize: 13,
-                                    fontFamily: "Onest Variable, sans-serif",
-                                },
-                                formatter: function (params: any) {
-                                    let label = params[0].name;
-                                    let value = new Intl.NumberFormat("es-AR", {
-                                        notation: "compact",
-                                        maximumFractionDigits: 1,
-                                    }).format(params[0].value);
-                                    return `<b>${label}</b><br/>Índice: ${value}`;
-                                },
-                            },
-                            grid: {
-                                top: 10,
-                                right: 0,
-                                bottom: 20,
-                                left: 0,
-                                containLabel: false,
-                            },
-                            xAxis: {
-                                type: "category",
-                                boundaryGap: false,
-                                data: xAxisData,
-                                show: false,
-                            },
-                            yAxis: {
-                                type: "log",
-                                show: false,
-                                min: "dataMin",
-                            },
-                            series: [
-                                {
-                                    name: "Índice",
-                                    type: "line",
-                                    data: seriesData,
-                                    smooth: 0.3,
-                                    symbol: "none",
-                                    lineStyle: {
-                                        color: "#0070F3",
-                                        width: 3,
-                                    },
-                                    itemStyle: {
-                                        color: "#0070F3",
-                                    },
-                                    areaStyle: {
-                                        color: new echarts.graphic.LinearGradient(
-                                            0,
-                                            0,
-                                            0,
-                                            1,
-                                            [
-                                                {
-                                                    offset: 0,
-                                                    color: "rgba(0, 112, 243, 0.4)",
-                                                },
-                                                {
-                                                    offset: 1,
-                                                    color: "rgba(0, 112, 243, 0.0)",
-                                                },
-                                            ],
-                                        ),
-                                    },
-                                },
-                            ],
-                        };
-
-                        myChart.setOption(option);
-
-                        // Asegurar que el gráfico se redimensione si cambia la ventana
-                        window.addEventListener("resize", () => {
-                            myChart?.resize();
-                        });
+                        await renderInflationChart(
+                            chartContainer,
+                            parseInt(startYear as string),
+                            parseInt(startMonth as string),
+                            finalEndYear,
+                            finalEndMonth,
+                            startIndexValue,
+                            endIndexValue,
+                            typedInflationData,
+                        );
                     }
                 } catch (e) {
                     console.error(
