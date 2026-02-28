@@ -15,11 +15,11 @@ const {
 	title,
 	description,
 	url,
-	image = "https://datosar.com/og-image.svg",
+	image = "https://calculadorainflacion.vercel.app/og-image.svg",
 	schema,
 	noindex = false,
 } = Astro.props;
-const siteUrl = "https://datosar.com";
+const siteUrl = "https://calculadorainflacion.vercel.app";
 const currentUrl = url ?? Astro.url?.toString() ?? siteUrl;
 ---
 
@@ -48,7 +48,7 @@ const currentUrl = url ?? Astro.url?.toString() ?? siteUrl;
 
 		<!-- Description -->
 		<meta name="description" content={description} />
-		<meta name="author" content="DatosAR" />
+		<meta name="author" content="Calculadora de Inflación" />
 		<meta name="theme-color" content="#004ACA" />
 		<meta
 			name="robots"
@@ -69,7 +69,7 @@ const currentUrl = url ?? Astro.url?.toString() ?? siteUrl;
 		<!-- Open Graph / Meta Tags -->
 		<meta property="og:type" content="website" />
 		<meta property="og:locale" content="es_AR" />
-		<meta property="og:site_name" content="DatosAR" />
+		<meta property="og:site_name" content="Calculadora de Inflación" />
 		<meta property="og:url" content={currentUrl} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
@@ -78,7 +78,7 @@ const currentUrl = url ?? Astro.url?.toString() ?? siteUrl;
 		<meta property="og:image:height" content="1024" />
 		<meta
 			property="og:image:alt"
-			content="DatosAR - Calculadoras de inflación y salario real en Argentina"
+			content="Calculadoras de inflación y salario real en Argentina"
 		/>
 
 		<!-- X (Twitter) -->

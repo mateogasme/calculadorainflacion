@@ -10,31 +10,31 @@ const schema = JSON.stringify({
 	"@graph": [
 		{
 			"@type": "Organization",
-			"@id": "https://datosar.com/#organization",
-			name: "DatosAR",
-			url: "https://datosar.com/",
-			logo: "https://datosar.com/favicon.svg",
+			"@id": "https://calculadorainflacion.vercel.app/#organization",
+			name: "Calculadora de Inflación",
+			url: "https://calculadorainflacion.vercel.app/",
+			logo: "https://calculadorainflacion.vercel.app/favicon.svg",
 			sameAs: ["https://github.com/mateogasme"],
 		},
 		{
 			"@type": "WebSite",
-			"@id": "https://datosar.com/#website",
-			name: "DatosAR",
-			url: "https://datosar.com/",
+			"@id": "https://calculadorainflacion.vercel.app/#website",
+			name: "Calculadora de Inflación",
+			url: "https://calculadorainflacion.vercel.app/",
 			inLanguage: "es-AR",
-			publisher: { "@id": "https://datosar.com/#organization" },
+			publisher: { "@id": "https://calculadorainflacion.vercel.app/#organization" },
 		},
 		{
 			"@type": ["WebApplication", "FinancialProduct"],
-			"@id": "https://datosar.com/#webapp-inflacion",
+			"@id": "https://calculadorainflacion.vercel.app/#webapp-inflacion",
 			name: "Calculadora de Inflación Argentina",
 			applicationCategory: "FinanceApplication",
 			operatingSystem: "All",
 			inLanguage: "es-AR",
 			description:
 				"Calculadora de inflación acumulada en Argentina desde 1950 hasta hoy. Nos basamos en fuentes oficiales y fidedignas (INDEC).",
-			url: "https://datosar.com/",
-			isPartOf: { "@id": "https://datosar.com/#website" },
+			url: "https://calculadorainflacion.vercel.app/",
+			isPartOf: { "@id": "https://calculadorainflacion.vercel.app/#website" },
 			offers: {
 				"@type": "Offer",
 				price: "0",
@@ -48,7 +48,7 @@ const schema = JSON.stringify({
 <Layout
 	title="Calculadora de Inflación Argentina (1950-2026) | Datos Oficiales INDEC"
 	description="Calculadora de inflación acumulada de Argentina desde 1950 hasta hoy. Nos basamos en fuentes oficiales y fidedignas para garantizar precisión matemática."
-	url="https://datosar.com/"
+	url="https://calculadorainflacion.vercel.app/"
 	schema={schema}
 >
 	<Header />

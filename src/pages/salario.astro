@@ -10,22 +10,24 @@ const schema = JSON.stringify({
     "@graph": [
         {
             "@type": "WebSite",
-            "@id": "https://datosar.com/#website",
-            name: "DatosAR",
-            url: "https://datosar.com/",
+            "@id": "https://calculadorainflacion.vercel.app/#website",
+            name: "Calculadora de Inflación",
+            url: "https://calculadorainflacion.vercel.app/",
             inLanguage: "es-AR",
         },
         {
             "@type": "WebApplication",
-            "@id": "https://datosar.com/salario#webapp-salario",
+            "@id": "https://calculadorainflacion.vercel.app/salario#webapp-salario",
             name: "Calculadora de Aumento Salarial vs Inflación",
             applicationCategory: "FinanceApplication",
             operatingSystem: "All",
             inLanguage: "es-AR",
             description:
                 "Herramienta que te permite comparar si el aumento de tu sueldo superó o perdió contra la inflación acumulada del mismo período en Argentina.",
-            url: "https://datosar.com/salario",
-            isPartOf: { "@id": "https://datosar.com/#website" },
+            url: "https://calculadorainflacion.vercel.app/salario",
+            isPartOf: {
+                "@id": "https://calculadorainflacion.vercel.app/#website",
+            },
             offers: {
                 "@type": "Offer",
                 price: "0",
@@ -39,13 +41,13 @@ const schema = JSON.stringify({
                     "@type": "ListItem",
                     position: 1,
                     name: "Inicio",
-                    item: "https://datosar.com/",
+                    item: "https://calculadorainflacion.vercel.app/",
                 },
                 {
                     "@type": "ListItem",
                     position: 2,
                     name: "Aumento salario",
-                    item: "https://datosar.com/salario",
+                    item: "https://calculadorainflacion.vercel.app/salario",
                 },
             ],
         },
@@ -54,9 +56,9 @@ const schema = JSON.stringify({
 ---
 
 <Layout
-    title="Analizar Aumento Salarial vs Inflación | DatosAR"
+    title="Analizar Aumento Salarial vs Inflación"
     description="Calculá exactamente si tu nuevo sueldo o propuesta laboral empató, ganó o perdió poder adquisitivo contra la inflación oficial en Argentina."
-    url="https://datosar.com/salario"
+    url="https://calculadorainflacion.vercel.app/salario"
     schema={schema}
 >
     <Header />

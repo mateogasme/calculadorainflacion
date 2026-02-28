@@ -8,44 +8,57 @@ const schema = JSON.stringify({
     "@graph": [
         {
             "@type": "Organization",
-            "@id": "https://datosar.com/#organization",
-            name: "DatosAR",
-            url: "https://datosar.com/",
+            "@id": "https://calculadorainflacion.vercel.app/#organization",
+            name: "Calculadora de Inflación",
+            url: "https://calculadorainflacion.vercel.app/",
         },
         {
             "@type": "WebSite",
-            "@id": "https://datosar.com/#website",
-            name: "DatosAR",
-            url: "https://datosar.com/",
+            "@id": "https://calculadorainflacion.vercel.app/#website",
+            name: "Calculadora de Inflación",
+            url: "https://calculadorainflacion.vercel.app/",
             inLanguage: "es-AR",
-            publisher: { "@id": "https://datosar.com/#organization" },
+            publisher: {
+                "@id": "https://calculadorainflacion.vercel.app/#organization",
+            },
         },
         {
             "@type": "Dataset",
-            "@id": "https://datosar.com/metodologia#dataset",
+            "@id": "https://calculadorainflacion.vercel.app/metodologia#dataset",
             name: "Fuentes e Índices de Inflación Argentina (1950-2026)",
             description:
                 "Metodología, fórmulas y empalme estadístico oficial del Instituto Nacional de Estadística y Censos (INDEC) utilizados para nuestra calculadora.",
-            creator: { "@id": "https://datosar.com/#organization" },
+            creator: {
+                "@id": "https://calculadorainflacion.vercel.app/#organization",
+            },
             inLanguage: "es-AR",
-            url: "https://datosar.com/metodologia",
-            isPartOf: { "@id": "https://datosar.com/#website" },
+            url: "https://calculadorainflacion.vercel.app/metodologia",
+            isPartOf: {
+                "@id": "https://calculadorainflacion.vercel.app/#website",
+            },
             keywords: ["inflacion argentina", "ipc indec", "metodologia"],
             dateModified: "2026-02-27",
         },
         {
             "@type": "TechArticle",
-            "@id": "https://datosar.com/metodologia#article",
+            "@id": "https://calculadorainflacion.vercel.app/metodologia#article",
             headline:
                 "Metodología y Fuentes de la Calculadora de Inflación Argentina",
             description:
                 "Explicación técnica del empalme de series, cambios monetarios y límites estadísticos usados para calcular inflación acumulada en Argentina.",
             inLanguage: "es-AR",
-            url: "https://datosar.com/metodologia",
-            author: { "@id": "https://datosar.com/#organization" },
-            publisher: { "@id": "https://datosar.com/#organization" },
-            isPartOf: { "@id": "https://datosar.com/#website" },
-            mainEntityOfPage: "https://datosar.com/metodologia",
+            url: "https://calculadorainflacion.vercel.app/metodologia",
+            author: {
+                "@id": "https://calculadorainflacion.vercel.app/#organization",
+            },
+            publisher: {
+                "@id": "https://calculadorainflacion.vercel.app/#organization",
+            },
+            isPartOf: {
+                "@id": "https://calculadorainflacion.vercel.app/#website",
+            },
+            mainEntityOfPage:
+                "https://calculadorainflacion.vercel.app/metodologia",
             dateModified: "2026-02-27",
         },
         {
@@ -55,13 +68,13 @@ const schema = JSON.stringify({
                     "@type": "ListItem",
                     position: 1,
                     name: "Inicio",
-                    item: "https://datosar.com/",
+                    item: "https://calculadorainflacion.vercel.app/",
                 },
                 {
                     "@type": "ListItem",
                     position: 2,
                     name: "Metodología",
-                    item: "https://datosar.com/metodologia",
+                    item: "https://calculadorainflacion.vercel.app/metodologia",
                 },
             ],
         },
@@ -71,8 +84,8 @@ const schema = JSON.stringify({
 
 <Layout
     title="Metodología y Fuentes - Calculadora de Inflación Argentina (1950-2026) | Datos Oficiales INDEC"
-    description="Conocé la metodología detrás de la calculadora de inflación histórica DatosAR. Análisis de fuentes del INDEC, empalmes estadísticos y cronología de cambios monetarios."
-    url="https://datosar.com/metodologia"
+    description="Conocé la metodología detrás de la calculadora de inflación histórica. Análisis de fuentes del INDEC, empalmes estadísticos y cronología de cambios monetarios."
+    url="https://calculadorainflacion.vercel.app/metodologia"
     schema={schema}
 >
     <Header />
