@@ -775,7 +775,7 @@ const irregularYears = [
                 const endKey = `${finalEndYear}-${finalEndMonth}`;
 
                 const { fetchInflationData } =
-                    await import("../utils/inflationFetcher");
+                    await import("../../../utils/inflationFetcher");
                 const typedData = await fetchInflationData();
 
                 let startIndexValue = 1;

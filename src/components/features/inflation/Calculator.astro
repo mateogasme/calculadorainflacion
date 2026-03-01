@@ -573,7 +573,7 @@ const irregularYears = [
 
                 // Obtaining inflation data dynamically with INDEC API overrides
                 const { fetchInflationData } =
-                    await import("../utils/inflationFetcher");
+                    await import("../../../utils/inflationFetcher");
                 const typedInflationData = await fetchInflationData();
 
                 // Fallback de seguridad iterativo si falta algún mes reciente
@@ -701,7 +701,7 @@ const irregularYears = [
                 // Generar gráfico evolutivo con ECharts extraído
                 try {
                     const { renderInflationChart } =
-                        await import("../utils/chartRenderer");
+                        await import("../../../utils/chartRenderer");
                     const chartContainer =
                         document.getElementById("echarts-container");
                     const chartWrapper =

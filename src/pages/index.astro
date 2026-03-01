@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Header from "../sections/Header.astro";
-import Hero from "../sections/Hero.astro";
-import Calculator from "../sections/Calculator.astro";
-import Result from "../sections/Result.astro";
+import Header from "../components/common/layout/Header.astro";
+import Hero from "../components/features/inflation/Hero.astro";
+import Calculator from "../components/features/inflation/Calculator.astro";
+import Result from "../components/features/inflation/Result.astro";
 
 const schema = JSON.stringify({
 	"@context": "https://schema.org",
@@ -22,7 +22,9 @@ const schema = JSON.stringify({
 			name: "Calculadora de Inflación",
 			url: "https://calculadorainflacion.vercel.app/",
 			inLanguage: "es-AR",
-			publisher: { "@id": "https://calculadorainflacion.vercel.app/#organization" },
+			publisher: {
+				"@id": "https://calculadorainflacion.vercel.app/#organization",
+			},
 		},
 		{
 			"@type": ["WebApplication", "FinancialProduct"],
@@ -34,7 +36,9 @@ const schema = JSON.stringify({
 			description:
 				"Calculadora de inflación acumulada en Argentina desde 1950 hasta hoy. Nos basamos en fuentes oficiales y fidedignas (INDEC).",
 			url: "https://calculadorainflacion.vercel.app/",
-			isPartOf: { "@id": "https://calculadorainflacion.vercel.app/#website" },
+			isPartOf: {
+				"@id": "https://calculadorainflacion.vercel.app/#website",
+			},
 			offers: {
 				"@type": "Offer",
 				price: "0",
