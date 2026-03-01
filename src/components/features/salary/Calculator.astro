@@ -805,9 +805,17 @@ const irregularYears = [
 
                 const resultExtraData =
                     document.getElementById("result-extra-data");
+                const inflationBadge = document.getElementById(
+                    "result-salary-inflation-badge",
+                );
 
                 if (resultIdealAmount)
                     resultIdealAmount.textContent = fmt.format(idealSalary);
+
+                if (inflationBadge) {
+                    const inflationPerc = (ratio - 1) * 100;
+                    inflationBadge.textContent = `${fmtPoder.format(inflationPerc)}%`;
+                }
 
                 const labelStart = `${startMonth}/${startYear}`;
                 const labelEnd = `${finalEndMonth}/${finalEndYear}`;
